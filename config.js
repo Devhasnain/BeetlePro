@@ -5,5 +5,9 @@ module.exports = {
         'PATCH',
         'DELETE'
     ],
+    HttpStatusCodes:{
+        internalServerError:500,
+        notFound:404,
+    },
     port:3000
 }

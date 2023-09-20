@@ -1,35 +1,29 @@
-const zod = require('zod');
-const connectToDatabase = require('../../database/DBconnection');
-const Users = require('../../database/models/User');
+const Drivers = require("../../database/models/Driver");
+const Users = require("../../database/models/User");
 
-const requestBodyValidation = zod.object({
-    name: zod.string().min(3),
-    email: zod.string().email().min(13),
-    number: zod.string().min(11),
-    password: zod.string().min(8),
-    role_type: zod.string(),
-})
 
 const useCheckExistingEmail = async (req, res, next) => {
     try {
 
-        const requestBody = await requestBodyValidation.safeParseAsync(req.body);
+        const { email } = req.body;
 
-        if (!requestBody.success) {
-            return res.status(401).json({ msg: requestBody.error })
+        if (!email) {
+            return res.status(400).json({ msg: "Bad request" })
         }
 
-        const { email } = requestBody.data;
+        let checkIfEmailinCutomers = await Users.findOne({ email });
 
-        await connectToDatabase();
+        let checkIfEmailinDrivers = await Drivers.findOne({ email });
 
-        let checkIfEmailExists = await Users.findOne({ email });
-
-        if (checkIfEmailExists) {
+        if (checkIfEmailinCutomers) {
             return res.status(400).json({ msg: "User already exists with this email!" })
         }
 
-        req.user = requestBody.data;
+        if (checkIfEmailinDrivers) {
+            return res.status(400).json({ msg: "User already exists with this email!" })
+        }
+
+        req.user = req.body;
         next()
 
     } catch (error) {

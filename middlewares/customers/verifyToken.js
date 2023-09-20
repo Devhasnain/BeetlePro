@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { destroyCookie } = require('nookies');
-const Users = require('../../database/models/User');
 const _ = require('lodash');
-const connectToDatabase = require('../../database/DBconnection');
+const Users = require('../../database/models/User');
 
 const extractFields = ['name', 'email', 'number', 'role_type', '_id', 'createdAt', 'updatedAt'];
 
@@ -14,10 +13,10 @@ const VerifyToken = async (req, res, next) => {
 
         if (!token) {
             next();
+            return;
         }
 
         jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-
 
             if (err) {
                 return res.status(401).json({ message: 'Failed to authenticate token' });
@@ -31,8 +30,6 @@ const VerifyToken = async (req, res, next) => {
                 destroyCookie(req, 'token');
                 return res.status(401).json({ message: 'Token has expired' });
             }
-
-            await connectToDatabase();
 
             let user = await Users.findOne({ _id, email });
 

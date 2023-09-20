@@ -2,7 +2,6 @@ const zod = require('zod');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const _ = require('lodash');
-const connectToDatabase = require('../../../database/DBconnection');
 const Users = require('../../../database/models/User');
 
 const extractFields = ['name', 'email', 'number', 'role_type', '_id', 'createdAt', 'updatedAt'];
@@ -24,8 +23,6 @@ const SignIn = async (req, res) => {
         }
 
         const { email, password } = requestBody.data;
-
-        await connectToDatabase();
 
         let user = await Users.findOne({ email });
 

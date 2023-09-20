@@ -3,30 +3,26 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const _ = require('lodash');
 const Drivers = require('../../../database/models/Driver');
-const connectToDatabase = require('../../../database/DBconnection');
 
 const extractFields = ['name', 'email', 'number', 'role_type', '_id', 'createdAt', 'updatedAt'];
 
 
-// const requestBodyValidation = zod.object({
-//     name: zod.string().min(3),
-//     email: zod.string().email().min(13),
-//     password: zod.string().min(8),
-// })
+const requestBodyValidation = zod.object({
+    name: zod.string().min(3),
+    email: zod.string().email().min(13),
+    password: zod.string().min(8),
+})
 
 const SignIn = async (req, res) => {
     try {
 
-        const requestBody = req.body;
-        // await requestBodyValidation.safeParseAsync(req.body);
+        const requestBody = await requestBodyValidation.safeParseAsync(req.body);
 
-        // if (!requestBody.success) {
-        //     return res.status(401).json({ msg: requestBody.error })
-        // }
+        if (!requestBody.success) {
+            return res.status(401).json({ msg: requestBody.error })
+        }
 
-        const { email, password } = requestBody;
-
-        await connectToDatabase();
+        const { email, password } = requestBody.data;
 
         let user = await Drivers.findOne({ email });
 

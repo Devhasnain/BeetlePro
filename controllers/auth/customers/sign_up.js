@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const _ = require("lodash");
-const connectToDatabase = require("../../../database/DBconnection");
 const Users = require('../../../database/models/User');
 
 const extractField = ['name', 'email', 'number', 'role_type', '_id', 'createdAt', 'updatedAt'];
@@ -14,14 +13,13 @@ const SignUp = async (req, res) => {
             throw new Error('Unknow error occured while registration, please try again!')
         };
 
+
         let password = await bcrypt.hash(userData.password, 12);
 
         let newUser = {
             ...userData,
             password
         }
-
-        await connectToDatabase();
 
         let registerUser = await Users.create(newUser);
 
