@@ -19,14 +19,19 @@ const dynamicFieldName = require("../middlewares/setFileName");
 
 const router = express.Router();
 
+// driver auth 
 router.post('/driver/register', withMethodGuard, useCheckDriverEmail, DriverSignUp);
+router.post('/driver/login', withMethodGuard, VerifyDriverToken, DriverSignIn);
+
+// customer auth
 router.post('/customer/register', withMethodGuard, useCheckCustomerEmail, CustomerSignUp);
 router.post('/customer/login', withMethodGuard, VerifyCustomerToken, CustomerSignIn);
-router.post('/driver/login', withMethodGuard, VerifyDriverToken, DriverSignIn);
+
+// driver file uploads 
 router.post('/onboarding/v1', withMethodGuard, apiGuard, uploadMultipleFiles, OnboardingV1);
 router.post('/onboarding/v2', withMethodGuard, apiGuard, uploadDriverFiles, OnboardingV2);
 router.post('/onboarding/v3', withMethodGuard, apiGuard, dynamicFieldName, OnboardingV3);
 
-
+router.post('/gen_opt/email', withMethodGuard, )
 
 module.exports = router;
