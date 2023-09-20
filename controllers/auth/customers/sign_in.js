@@ -4,11 +4,10 @@ const jwt = require("jsonwebtoken");
 const _ = require('lodash');
 const Users = require('../../../database/models/User');
 
-const extractFields = ['name', 'email', 'number', 'role_type', '_id', 'createdAt', 'updatedAt'];
+const extractFields = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'user_image'];
 
 
 const requestBodyValidation = zod.object({
-    name: zod.string().min(3),
     email: zod.string().email().min(13),
     password: zod.string().min(8),
 })
@@ -37,10 +36,11 @@ const SignIn = async (req, res) => {
         }
 
         let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        console.log(user)
 
-        let userdata = _.pick(user, extractFields);
+        let userdata = _.pick(user,extractFields);
 
-        return res.status(200).json({ ...userdata, token })
+        return res.status(200).json({ ...userdata, token, status: true });
 
     } catch (error) {
         return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? 'Internal Server Error' })

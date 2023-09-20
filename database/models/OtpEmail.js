@@ -15,10 +15,6 @@ const OtpEmailsSchema = new mongoose.Schema({
     code: {
         type: Number,
         required: true
-    },
-    expiresIn: {
-        type: Number,
-        required: true
     }
 },
     {

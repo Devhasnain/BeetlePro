@@ -13,7 +13,13 @@ const UsersSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     role_type: { type: String, required: true },
     id: { type: mongoose.Types.ObjectId },
-    image: { type: String }
+    active: { type: Boolean },
+    address: { type: String },
+    device_token: { type: String },
+    otp_id: { type: String },
+    signup_type: { type: String },
+    user_image: { type: String },
+    user_id: { type: String }
 },
     {
         timestamps: true

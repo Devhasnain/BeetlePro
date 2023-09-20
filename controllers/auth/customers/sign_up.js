@@ -1,8 +1,10 @@
 const bcrypt = require('bcrypt');
 const _ = require("lodash");
 const Users = require('../../../database/models/User');
+const { v4: uuidv4 } = require('uuid');
+const jwt = require('jsonwebtoken');
 
-const extractField = ['name', 'email', 'number', 'role_type', '_id', 'createdAt', 'updatedAt'];
+const extractField = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt','user_id', 'user_image'];
 
 const SignUp = async (req, res) => {
     try {
@@ -16,9 +18,12 @@ const SignUp = async (req, res) => {
 
         let password = await bcrypt.hash(userData.password, 12);
 
+        let user_id = uuidv4();
+
         let newUser = {
             ...userData,
-            password
+            password,
+            user_id,
         }
 
         let registerUser = await Users.create(newUser);
@@ -31,9 +36,12 @@ const SignUp = async (req, res) => {
 
         let user = _.pick(savedUser, extractField);
 
-        return res.status(200).json(user);
+        let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        return res.status(200).json({ user, token });
 
     } catch (error) {
+        console.log(error)
         return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? 'Internal Server Error' })
     }
 };

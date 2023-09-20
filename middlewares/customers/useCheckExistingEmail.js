@@ -5,10 +5,14 @@ const Users = require("../../database/models/User");
 const useCheckExistingEmail = async (req, res, next) => {
     try {
 
-        const { email } = req.body;
+        const { email, name, password, confirmPassword } = req.body;
 
-        if (!email) {
+        if (!email || !password || !confirmPassword || !name) {
             return res.status(400).json({ msg: "Bad request" })
+        }
+
+        if (password.toLowerCase() !== confirmPassword.toLowerCase()) {
+            return res.status(400).json({ msg: "password and confirm password don't matched" })
         }
 
         let checkIfEmailinCutomers = await Users.findOne({ email });

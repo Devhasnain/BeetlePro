@@ -13,6 +13,7 @@ const OrderRoute = require('./routes/order');
 const TestRouter = require('./routes/test');
 const PublicRouter = require('./controllers/public/getUsers');
 const ServeImage = require("./controllers/public/ServeImage");
+const { upload } = require("./controllers/uploads/Upload");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,9 +28,15 @@ app.use('/auth', AuthRoute);
 app.use('/order', OrderRoute);
 app.use('/data', PublicRouter);
 app.use('/test', TestRouter);
+app.post('/api', upload.any(), (req,res)=>{
+    let files = req.files
+    console.log(files)
+    console.log(req.body);
+    return res.status(200).json({msg:""})
+})
 app.get('/image/:id', ServeImage);
 
 
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log('server is live')
 })

@@ -14,12 +14,16 @@ const useCheckDriverEmail = require("../middlewares/drivers/useCheckExistingEmai
 const VerifyDriverToken = require("../middlewares/drivers/verifyToken");
 const DriverSignIn = require("../controllers/auth/drivers/sign_in");
 const DriverSignUp = require("../controllers/auth/drivers/sign_up");
+const DriverSignUpOnboard = require("../controllers/auth/drivers/sign_up_test");
+
 const { OnboardingV1, OnboardingV2, OnboardingV3 } = require("../controllers/auth/drivers/onboarding");
 const dynamicFieldName = require("../middlewares/setFileName");
 
 const router = express.Router();
 
 // driver auth 
+router.post('/driver/sign_up', withMethodGuard, uploadMultipleFiles, useCheckDriverEmail, DriverSignUpOnboard);
+
 router.post('/driver/register', withMethodGuard, useCheckDriverEmail, DriverSignUp);
 router.post('/driver/login', withMethodGuard, VerifyDriverToken, DriverSignIn);
 
@@ -28,10 +32,8 @@ router.post('/customer/register', withMethodGuard, useCheckCustomerEmail, Custom
 router.post('/customer/login', withMethodGuard, VerifyCustomerToken, CustomerSignIn);
 
 // driver file uploads 
-router.post('/onboarding/v1', withMethodGuard, apiGuard, uploadMultipleFiles, OnboardingV1);
-router.post('/onboarding/v2', withMethodGuard, apiGuard, uploadDriverFiles, OnboardingV2);
-router.post('/onboarding/v3', withMethodGuard, apiGuard, dynamicFieldName, OnboardingV3);
-
-router.post('/gen_opt/email', withMethodGuard, )
+router.post('/driver/onboarding/v1', withMethodGuard, apiGuard, uploadMultipleFiles, OnboardingV1);
+router.post('/driver/onboarding/v2', withMethodGuard, apiGuard, uploadDriverFiles, OnboardingV2);
+router.post('/driver/onboarding/v3', withMethodGuard, apiGuard, dynamicFieldName, OnboardingV3);
 
 module.exports = router;
