@@ -28,15 +28,15 @@ app.use('/auth', AuthRoute);
 app.use('/order', OrderRoute);
 app.use('/data', PublicRouter);
 app.use('/test', TestRouter);
-app.post('/api', upload.any(), (req,res)=>{
+app.post('/api', upload.any(), (req, res) => {
     let files = req.files
     console.log(files)
     console.log(req.body);
-    return res.status(200).json({msg:""})
+    return res.status(200).json({ msg: "" })
 })
 app.get('/image/:id', ServeImage);
 
 
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3001, () => {
     console.log('server is live')
 })
