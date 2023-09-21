@@ -1,5 +1,4 @@
-const connectToDatabase = require('../../database/DBconnection');
-const Users = require('../../database/models/User');
+const Drivers = require('../../database/models/Driver');
 
 const GetUsers = async (req, res) => {
     try {
@@ -8,9 +7,7 @@ const GetUsers = async (req, res) => {
             return res.status(400).json({ msg: "Method Not Allowed" })
         }
 
-        await connectToDatabase();
-
-        let users = await Users.find().select('-password');
+        let users = await Drivers.find().select('-password');
 
         return res.status(200).json(users);
 

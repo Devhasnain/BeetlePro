@@ -6,14 +6,14 @@ const connectToDatabase = require('../../database/DBconnection');
 
 const extractFields = ['name', 'email', 'number', 'role_type', '_id', 'createdAt', 'updatedAt'];
 
-const VerifyToken = async (req, res, next) => {
+const VerifyToken = async (req, res) => {
 
     const token = req.headers.authorization;
 
     try {
 
         if (!token) {
-            next();
+            return res.status(400).json({msg:"Unable to login, Session token unavaliable!"});
         }
 
         jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {

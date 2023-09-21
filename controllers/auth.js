@@ -8,13 +8,19 @@ const useCheckExistingEmailDrivers = require("../middlewares/drivers/useCheckExi
 const withMethodGuard = require("../middlewares/withMethodGuard");
 const VerifyTokenDrivers = require("../middlewares/drivers/verifyToken");
 const VerifyTokenCustomers = require("../middlewares/customers/verifyToken");
+const Upload = require('../functions/uploads/Upload');
 
 const router = express.Router();
 
-router.post('/driver/sign_in', withMethodGuard, VerifyTokenDrivers, SignInDrivers);
+// apis for drivers 
+router.post('/driver/auto_sign_in',VerifyTokenDrivers);
+router.post('/driver/sign_in', withMethodGuard, SignInDrivers);
 router.post('/driver/sign_up', withMethodGuard, useCheckExistingEmailDrivers, SignUpDrivers);
-router.post('/customer/sign_in', withMethodGuard, VerifyTokenCustomers, SignInCustomers);
-router.post('/customer/sign_up', withMethodGuard, useCheckExistingEmailCustomers, SignUpCustomers);
+
+// apis for customers
+router.post('/customer/auto_sign_in',VerifyTokenCustomers);
+router.post('/customer/sign_in', withMethodGuard, SignInCustomers);
+router.post('/customer/sign_up', withMethodGuard, useCheckExistingEmailCustomers,SignUpCustomers);
 
 
 module.exports = router;

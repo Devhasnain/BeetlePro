@@ -7,9 +7,10 @@ const connectToDatabase = async () => {
             const options = {
                 family: 4,
                 useNewUrlParser: true,
-                useUnifiedTopology: true
+                useUnifiedTopology: true,
+                maxPoolSize: 10,
             };
-            await mongoose.connect(dbURI, options);
+            mongoose.connect(dbURI, options);
             console.log('Connected to MongoDB');
             return;
         }
