@@ -3,8 +3,9 @@ const _ = require("lodash");
 const Drivers = require('../../../database/models/Driver');
 const Files = require('../../../database/models/File');
 // const Files = require('../../../database/models/File');
+const {imageURL} = require('../../../config');
 
-let url = 'http://localhost:3001/image'
+let url = imageURL
 
 const SignUpTest = async (req, res) => {
     try {

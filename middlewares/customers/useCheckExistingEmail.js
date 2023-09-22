@@ -1,13 +1,14 @@
 const zod = require('zod');
 const Users = require('../../database/models/User');
 const Drivers = require('../../database/models/Driver');
+const { roles } = require('../../config');
 
 const requestBodyValidation = zod.object({
     name: zod.string().min(3),
     email: zod.string().email().min(13),
     user_phone: zod.string().min(11),
     password: zod.string().min(8),
-    role_type: zod.string(),
+    role_type: zod.number(),
 })
 
 const useCheckExistingEmail = async (req, res, next) => {
@@ -16,10 +17,10 @@ const useCheckExistingEmail = async (req, res, next) => {
         const requestBody = await requestBodyValidation.safeParseAsync(req.body);
 
         if (!requestBody.success) {
-            return res.status(401).json({ msg: requestBody.error })
+            return res.status(401).json({ msg: `${requestBody.error.name}, data validation faild!` })
         }
 
-        const { email } = requestBody.data;
+        const { email, role_type } = requestBody.data;
 
         let checkIfEmailinDrivers = await Drivers.findOne({ email });
         let checkIfEmailinCutomers = await Users.findOne({ email });
@@ -32,7 +33,14 @@ const useCheckExistingEmail = async (req, res, next) => {
             return res.status(400).json({ msg: "User already exists with this email!" })
         }
 
+        let role = roles.find((item) => item.id === role_type);
+
+        if (!role) {
+            return res.status(404).json({ msg: `Role didn't found with id:${role_type}` })
+        }
+
         req.user = req.body;
+        req.user.role_type = role.id;
         next()
 
     } catch (error) {

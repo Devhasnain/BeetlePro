@@ -4,7 +4,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const compression = require('compression');
 const connectToDatabase = require("./database/DBconnection");
-const Upload = require("./functions/uploads/Upload");
 
 const cacheMiddleware = require("./middlewares/cachingMiddleware");
 const app = express();
@@ -12,11 +11,10 @@ const app = express();
 
 const AuthRoute = require('./routes/auth');
 const OrderRoute = require('./routes/order');
+const ReviewRoute = require('./routes/review');
 
 const TestRouter = require('./routes/test');
 const PublicRouter = require('./controllers/public/getUsers');
-const ServeImage = require("./controllers/public/ServeImage");
-const { upload } = require("./controllers/uploads/Upload");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,6 +28,7 @@ connectToDatabase();
 
 app.use('/auth', AuthRoute);
 app.use('/order', OrderRoute);
+app.use('/review', ReviewRoute)
 
 app.get('/', (req, res) => {
     return res.status(200).json({ msg: "hellow" })

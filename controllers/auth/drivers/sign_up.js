@@ -12,10 +12,6 @@ const SignUp = async (req, res) => {
 
         let userData = req.user;
 
-        if (!userData) {
-            throw new Error('Unknow error occured while registration, please try again!')
-        };
-
         let password = await bcrypt.hash(userData.password, 12);
 
         let user_id = uuidv4();
@@ -23,10 +19,9 @@ const SignUp = async (req, res) => {
         let newUser = {
             ...userData,
             password,
-            user_id
+            user_id,
+            role_type:userData.role_type
         }
-
-        await connectToDatabase();
 
         let registerUser = await Drivers.create(newUser);
 

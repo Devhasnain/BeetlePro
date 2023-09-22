@@ -14,30 +14,26 @@ const VerifyToken = async (req, res, next) => {
             return;
         }
 
-        jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+        const { exp, _id, email } = jwt.verify(token, process.env.JWT_SECRET);
 
-            if (err) {
-                return res.status(401).json({ message: 'Failed to authenticate token' });
-            }
+        if (!exp || !_id || !email) {
+            return res.status(400).json({ msg: "Authentication faild!" });
+        }
 
-            const { exp, _id, email } = decoded;
+        const currentTime = Math.floor(Date.now() / 1000);
 
-            const currentTime = Math.floor(Date.now() / 1000);
+        if (exp <= currentTime) {
+            destroyCookie(req, 'token');
+            return res.status(401).json({ message: 'Token has expired' });
+        }
 
-            if (exp <= currentTime) {
-                destroyCookie(req, 'token');
-                return res.status(401).json({ message: 'Token has expired' });
-            }
+        let user = await Drivers.findOne({ _id, email }).select('-password').lean().exec();
 
-            let user = await Drivers.findOne({ _id }).select('-password');
+        if (!user) {
+            return res.status(404).json({ msg: "user not found" })
+        }
 
-            if (!user) {
-                return res.status(404).json({ msg: "user not found" })
-            }
-
-            return res.status(200).json({ ...user, token });
-
-        });
+        return res.status(200).json({ ...user, token });
 
 
     } catch (error) {

@@ -29,5 +29,14 @@ module.exports = {
     ],
     usersCollection: 'users',
     driversCollection: 'drivers',
+    SUPPORTEDMETHOD: 'POST',
+    SUPPORTEDGETMETHOD: "GET",
+    order: {
+        cancel: "canceled",
+        pending: 'pending',
+        accept: 'accepted',
+        delivered: 'delivered'
+    },
+    imageURL: "http://localhost:3001/image",
     port: 3000
 }

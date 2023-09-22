@@ -23,6 +23,7 @@ const SignUp = async (req, res) => {
             ...userData,
             password,
             user_id,
+            role_type: userData.role_type
         }
 
         let registerUser = await Users.create(newUser);

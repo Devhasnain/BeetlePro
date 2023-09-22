@@ -1,6 +1,6 @@
 const express = require("express");
 const withMethodGuard = require("../middlewares/withMethodGuard");
-const { uploadDriverFiles, uploadMultipleFiles } = require('../controllers/uploads/Upload');
+const { uploadDriverFiles, uploadMultipleFiles, upload } = require('../controllers/uploads/Upload');
 
 // customers 
 const useCheckCustomerEmail = require("../middlewares/customers/useCheckExistingEmail");
@@ -20,11 +20,10 @@ const { OnboardingV1, OnboardingV2, OnboardingV3 } = require("../controllers/aut
 const dynamicFieldName = require("../middlewares/setFileName");
 const resetPassword = require("../controllers/auth/resetpassword");
 const updateCurrentPassword = require("../controllers/auth/updateCurrentPassword");
-const { usersCollection, driversCollection } = require("../config");
+const { usersCollection, driversCollection, SUPPORTEDMETHOD } = require("../config");
 const apiGuard = require("../middlewares/customers/apiGuard");
 const getUserData = require("../controllers/auth/getUserData");
-const SUPPORTEDMETHOD = 'POST';
-const SUPPORTEDGETMETHOD = "GET";
+const updateUserProfile = require("../controllers/auth/customers/updateProfile");
 
 const router = express.Router();
 
@@ -46,6 +45,7 @@ router.post('/driver/onboarding/v3', withMethodGuard(SUPPORTEDMETHOD), apiGuard,
 router.get('/customer/:user_id', getUserData(usersCollection));
 router.post('/customer/register', withMethodGuard(SUPPORTEDMETHOD), useCheckCustomerEmail, CustomerSignUp);
 router.post('/customer/login', withMethodGuard(SUPPORTEDMETHOD), VerifyCustomerToken, CustomerSignIn);
+router.post('/customer/update-profile', withMethodGuard(SUPPORTEDMETHOD), apiGuard, upload.single('image'), updateUserProfile);
 router.post('/customer/user-forget-password-reset', withMethodGuard(SUPPORTEDMETHOD), resetPassword(usersCollection));
 router.post('/customer/update-password', withMethodGuard(SUPPORTEDMETHOD), apiGuard, updateCurrentPassword(usersCollection));
 

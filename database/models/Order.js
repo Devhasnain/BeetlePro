@@ -37,6 +37,7 @@ const OrdersSchema = new mongoose.Schema({
     order_shipping_assurance: { type: String },
     order_subtotal_price: { type: String },
     order_status: { type: String },
+    order_id: { type: String },
     payment_status: { type: String },
     payment_response: { type: String },
 },

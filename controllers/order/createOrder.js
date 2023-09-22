@@ -1,5 +1,8 @@
-const { HttpStatusCodes } = require("../../config");
+const { HttpStatusCodes, order } = require("../../config");
+const Drivers = require("../../database/models/Driver");
 const Orders = require("../../database/models/Order");
+const { v4: uuidv4 } = require('uuid');
+
 
 const CreateOrder = async (req, res) => {
     try {
@@ -7,10 +10,20 @@ const CreateOrder = async (req, res) => {
         let user = req.user;
         let data = req.body;
 
+        let driver = await Drivers.findOne({ user_id: data.driver_id }).exec();
+
+        if (!driver) {
+            return res.status(404).json({ msg: `Driver not found with this id:${data.driver_id}` });
+        }
+
+        let order_id = uuidv4();
+
         let createOrder = await Orders.create({
             ...data,
-            driver_id: data.driver_id,
-            sender_id: user._id
+            order_id,
+            driver_id: driver._id,
+            sender_id: user._id,
+            order_status: order.pending
         });
 
         await createOrder.save();

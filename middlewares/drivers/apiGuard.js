@@ -24,10 +24,10 @@ const apiGuard = async (req, res, next) => {
             return res.status(401).json({ message: 'Token has expired' });
         }
 
-        let user = await Drivers.findOne({ _id }).select('-password');
+        let user = await Drivers.findOne({ _id }).select('-password').lean().exec();
 
         if (!user) {
-            return res.status(404).json({ msg: "user not found" })
+            return res.status(404).json({ msg: "Authentication faild, User not found" })
         }
 
         req.user = user;

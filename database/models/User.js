@@ -11,7 +11,7 @@ const UsersSchema = new mongoose.Schema({
     flags: { type: String, },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    role_type: { type: String, required: true },
+    role_type: { type: Number, required: true },
     id: { type: mongoose.Types.ObjectId },
     active: { type: Boolean },
     address: { type: String },

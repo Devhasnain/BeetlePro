@@ -25,16 +25,10 @@ const apiGuard = async (req, res, next) => {
             return res.status(401).json({ message: 'Token has expired' });
         }
 
-        let user = await Users.findOne({ _id }).select('-password');
+        let user = await Users.findOne({ _id }).select('-password').lean().exec();
 
         if (!user) {
             return res.status(404).json({ msg: "user not found" })
-        }
-
-        if (req.method === 'GET') {
-            req.user = user;
-            next();
-            return
         }
 
         if (Number(user?.role_type) !== roles[2].id) {
