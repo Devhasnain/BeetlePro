@@ -37,6 +37,6 @@ app.get('/', (req, res) => {
 app.use('/data', PublicRouter);
 app.use('/test', TestRouter);
 
-app.listen(process.env.PORT || 3001, () => {
+app.listen(() => {
     console.log('server is live')
 })
