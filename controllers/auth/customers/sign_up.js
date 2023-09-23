@@ -1,8 +1,8 @@
-const bcrypt = require('bcrypt');
-const _ = require("lodash");
-const Users = require('../../../database/models/User');
-const { v4: uuidv4 } = require('uuid');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcrypt';
+import _ from "lodash";
+import Users from '../../../database/models/User.js';
+import { v4 as uuidv4 } from 'uuid';
+import jwt from 'jsonwebtoken';
 
 const extractField = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'user_image'];
 
@@ -46,4 +46,4 @@ const SignUp = async (req, res) => {
     }
 };
 
-module.exports = SignUp;
+export default SignUp;

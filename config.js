@@ -1,4 +1,4 @@
-module.exports = {
+const config ={
     httpMethods: [
         'GET',
         'POST',
@@ -34,9 +34,19 @@ module.exports = {
     order: {
         cancel: "canceled",
         pending: 'pending',
-        accept: 'accepted',
-        delivered: 'delivered'
+        accept: 'active',
+        delivered: 'delivered',
+    },
+    driver_order_status: {
+        active: 'active',
+        canceled: 'canceled'
+    },
+    sender_order_status: {
+        active: 'active',
+        canceled: 'canceled'
     },
     imageURL: "http://localhost:3001/image",
     port: 3000
-}
+};
+
+export default config

@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const { destroyCookie } = require('nookies');
-const _ = require('lodash');
-const Users = require('../../database/models/User');
+import jwt from 'jsonwebtoken';
+import { destroyCookie } from 'nookies';
+import _ from 'lodash';
+import Users from '../../database/models/User.js';
 
 const VerifyToken = async (req, res, next) => {
 
@@ -27,13 +27,13 @@ const VerifyToken = async (req, res, next) => {
             return res.status(401).json({ message: 'Token has expired' });
         }
 
-        let user = await Users.findOne({ _id, email }).select('-password');
+        let user = await Users.findOne({ _id: _id }).select('-password');
 
         if (!user) {
             return res.status(404).json({ msg: "user not found" })
         }
 
-        return res.status(200).json({ ...userData, token });
+        return res.status(200).json({ ...user, token });
 
 
     } catch (error) {
@@ -42,4 +42,4 @@ const VerifyToken = async (req, res, next) => {
     }
 };
 
-module.exports = VerifyToken;
+export default VerifyToken;

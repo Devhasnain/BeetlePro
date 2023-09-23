@@ -1,8 +1,9 @@
-const { HttpStatusCodes } = require("../../config");
-const Drivers = require("../../database/models/Driver");
-const bcrypt = require("bcrypt");
-const Users = require("../../database/models/User");
-const { usersCollection, driversCollection } = require('../../config');
+import Drivers from "../../database/models/Driver.js";
+import bcrypt from 'bcrypt';
+import Users from "../../database/models/User.js";
+import config  from '../../config.js';
+
+let { usersCollection, driversCollection, HttpStatusCodes  } = config;
 
 const resetPassword = (collection) => {
     return async (req, res) => {
@@ -29,4 +30,4 @@ const resetPassword = (collection) => {
     };
 };
 
-module.exports = resetPassword;
+export default resetPassword;

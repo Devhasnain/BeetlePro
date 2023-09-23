@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const { destroyCookie } = require('nookies');
-const _ = require('lodash');
-const Drivers = require('../../database/models/Driver');
+import jwt from 'jsonwebtoken';
+import { destroyCookie } from 'nookies'; 
+import _ from 'lodash';
+import Drivers from '../../database/models/Driver.js';
 
 const VerifyToken = async (req, res, next) => {
 
@@ -42,4 +42,4 @@ const VerifyToken = async (req, res, next) => {
     }
 };
 
-module.exports = VerifyToken;
+export default VerifyToken;

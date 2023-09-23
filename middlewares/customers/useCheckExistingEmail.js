@@ -1,7 +1,9 @@
-const zod = require('zod');
-const Users = require('../../database/models/User');
-const Drivers = require('../../database/models/Driver');
-const { roles } = require('../../config');
+import zod from 'zod';
+import Users from '../../database/models/User.js';
+import Drivers from '../../database/models/Driver.js';
+import config from '../../config.js';
+
+let { roles } = config;
 
 const requestBodyValidation = zod.object({
     name: zod.string().min(3),
@@ -48,4 +50,4 @@ const useCheckExistingEmail = async (req, res, next) => {
     }
 };
 
-module.exports = useCheckExistingEmail;
+export default useCheckExistingEmail;

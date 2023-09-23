@@ -1,8 +1,10 @@
-const { HttpStatusCodes } = require("../../../config");
-const Orders = require("../../../database/models/Order");
-const { order } = require('../../../config');
+import config from "../../../config.js";
+import Orders from "../../../database/models/Order.js";
 
-const { accept } = order;
+
+let { HttpStatusCodes, driver_order_status, order } = config;
+
+const { accept, cancel } = order;
 
 const acceptOrderById = async (req, res) => {
     try {
@@ -21,11 +23,15 @@ const acceptOrderById = async (req, res) => {
             return res.status(404).json({ msg: `Order not found with this id:${order_id}, for driver:${user.user_id}` });
         };
 
-        if (order.order_status === accept) {
-            return res.status(200).json({ msg: `Order ${order.order_id} is aready accepted!` });
+        if (order.order_status === cancel) {
+            return res.status(200).json({ msg: `Order ${order.order_id} has been canceled!` });
         }
 
-        await Orders.findOneAndUpdate({ _id: order._id }, { $set: { order_status: accept } }, { new: true });
+        if (order.order_status === accept) {
+            return res.status(200).json({ msg: `Order ${order.order_id} is active!` });
+        }
+
+        await Orders.findOneAndUpdate({ _id: order._id }, { $set: { order_status: accept, driver_order_status: driver_order_status.active } }, { new: true });
 
         return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!` });
 
@@ -34,4 +40,4 @@ const acceptOrderById = async (req, res) => {
     }
 };
 
-module.exports = acceptOrderById;
+export default acceptOrderById;

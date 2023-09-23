@@ -1,5 +1,5 @@
-class NotFoundError extends Error {}
-class AuthenticationError extends Error {}
+class NotFoundError extends Error { }
+class AuthenticationError extends Error { }
 
 function handleError(error) {
     let errorMessage;
@@ -29,4 +29,4 @@ function handleError(error) {
     };
 };
 
-module.exports = handleError;
+export default handleError;

@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
 const OrdersSchema = new mongoose.Schema({
     tracking_code: { type: String },
     item_type: { type: String },
@@ -21,6 +20,12 @@ const OrdersSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
+    sender_order_status: { type: String },
+    sender_order_cancellation_reason: { type: String },
+    sender_order_review_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Review',
+    },
     sender_name: { type: String },
     sender_address: { type: String },
     sender_phonenumber: { type: String },
@@ -34,12 +39,19 @@ const OrdersSchema = new mongoose.Schema({
         ref: 'Driver',
     },
     driver_quotation: { type: String },
+    driver_order_status: { type: String },
+    driver_order_cancellation_reason: { type: String },
+    driver_order_review_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Review',
+    },
     order_shipping_assurance: { type: String },
     order_subtotal_price: { type: String },
     order_status: { type: String },
     order_id: { type: String },
     payment_status: { type: String },
     payment_response: { type: String },
+
 },
     {
         timestamps: true
@@ -48,7 +60,7 @@ const OrdersSchema = new mongoose.Schema({
 );
 
 const Orders = mongoose.models.Order || mongoose.model("Order", OrdersSchema);
-module.exports = Orders;
+export default Orders
 
 
 

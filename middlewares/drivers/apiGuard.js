@@ -1,6 +1,8 @@
-const { HttpStatusCodes } = require('../../config');
-const jwt = require("jsonwebtoken");
-const Drivers = require('../../database/models/Driver');
+import config from '../../config.js';
+import jwt from "jsonwebtoken";
+import Drivers from '../../database/models/Driver.js';
+
+const { HttpStatusCodes } = config;
 const apiGuard = async (req, res, next) => {
 
     const token = req.headers.authorization;
@@ -38,4 +40,4 @@ const apiGuard = async (req, res, next) => {
     }
 };
 
-module.exports = apiGuard;
+export default apiGuard;

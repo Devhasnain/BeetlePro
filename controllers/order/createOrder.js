@@ -1,8 +1,9 @@
-const { HttpStatusCodes, order } = require("../../config");
-const Drivers = require("../../database/models/Driver");
-const Orders = require("../../database/models/Order");
-const { v4: uuidv4 } = require('uuid');
+import config from "../../config.js";
+import Drivers from "../../database/models/Driver.js";
+import Orders from "../../database/models/Order.js";
+import { v4 as uuidv4 } from 'uuid';
 
+let { HttpStatusCodes, order, sender_order_status } = config;
 
 const CreateOrder = async (req, res) => {
     try {
@@ -23,6 +24,7 @@ const CreateOrder = async (req, res) => {
             order_id,
             driver_id: driver._id,
             sender_id: user._id,
+            sender_order_status: sender_order_status.active,
             order_status: order.pending
         });
 
@@ -35,4 +37,4 @@ const CreateOrder = async (req, res) => {
     }
 };
 
-module.exports = CreateOrder;
+export default CreateOrder;

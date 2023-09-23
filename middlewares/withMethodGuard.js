@@ -1,5 +1,3 @@
-const config = require('../config');
-
 const withMethodGuard = (allowedMethod) => {
     return (req, res, next) => {
         try {
@@ -19,5 +17,4 @@ const withMethodGuard = (allowedMethod) => {
     }
 }
 
-
-module.exports = withMethodGuard;
+export default withMethodGuard;

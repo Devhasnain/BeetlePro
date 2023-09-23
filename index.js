@@ -1,42 +1,63 @@
-const express = require("express");
-const dotEnv = require("dotenv");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const compression = require('compression');
-const connectToDatabase = require("./database/DBconnection");
+import express from 'express';
+import dotEnv from 'dotenv';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import compression from 'compression';
+import DBconnection from './database/DBconnection.js';
+import helmet from 'helmet';
+import cacheMiddleware from './middlewares/cachingMiddleware.js';
+import AuthRoute from './routes/auth.js';
+import OrderRoute from './routes/order.js';
+import handleError from './utils/ReturnError.js';
+import Users from './database/models/User.js';
+import Drivers from './database/models/Driver.js';
+import Orders from './database/models/Order.js';
+import Files from './database/models/File.js';
 
-const cacheMiddleware = require("./middlewares/cachingMiddleware");
 const app = express();
 
 
-const AuthRoute = require('./routes/auth');
-const OrderRoute = require('./routes/order');
-const ReviewRoute = require('./routes/review');
-
-const TestRouter = require('./routes/test');
-const PublicRouter = require('./controllers/public/getUsers');
-
+app.use(helmet());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(compression());
+
+function shouldCompress(req, res) {
+    if (req.headers['x-no-compression']) {
+        return false
+    }
+    return compression.filter(req, res)
+}
+
+app.use(compression({ filter: shouldCompress }));
 dotEnv.config();
 
 cacheMiddleware();
 
-connectToDatabase();
+DBconnection();
 
-app.use('/auth', AuthRoute);
-app.use('/order', OrderRoute);
-app.use('/review', ReviewRoute)
+app.use('/beetlepro/api/auth', AuthRoute);
+app.use('/beetlepro/api/order', OrderRoute);
+app.get('/beetlepro/api/data', async (req, res) => {
+    try {
 
-app.get('/', (req, res) => {
+        let customers = await Users.find({});
+        let drivers = await Drivers.find({});
+        let orders = await Orders.find({});
+        let files = await Files.find({});
+
+        return res.status(200).json({ customers, drivers, orders, files })
+
+    } catch (error) {
+        let response = handleError(error);
+        return res.status(response.statusCode).json(response.body);
+    }
+})
+
+app.get('/beetlepro/api/', (req, res) => {
     return res.status(200).json({ msg: "hellow" })
 })
 
-app.use('/data', PublicRouter);
-app.use('/test', TestRouter);
-
-app.listen(process.env.PORT || 3001, () => {
+app.listen(3001, '0.0.0.0', () => {
     console.log('server is live')
 })

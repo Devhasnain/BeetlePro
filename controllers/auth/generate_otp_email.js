@@ -1,6 +1,6 @@
-const { HttpStatusCodes } = require("../../config");
-const Drivers = require("../../database/models/Driver");
-const Users = require("../../database/models/User");
+const { HttpStatusCodes } = require("../../config.js");
+const Drivers = require("../../database/models/Driver.js");
+const Users = require("../../database/models/User.js");
 
 const GenerateOtpForEmail = async (req, res) => {
     try {

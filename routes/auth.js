@@ -1,36 +1,38 @@
-const express = require("express");
-const withMethodGuard = require("../middlewares/withMethodGuard");
-const { uploadDriverFiles, uploadMultipleFiles, upload } = require('../controllers/uploads/Upload');
+import express from 'express';
+import withMethodGuard from '../middlewares/withMethodGuard.js';
+import { uploadDriverFiles, uploadMultipleFiles, upload } from '../controllers/uploads/Upload.js';
 
 // customers 
-const useCheckCustomerEmail = require("../middlewares/customers/useCheckExistingEmail");
-const VerifyCustomerToken = require("../middlewares/customers/verifyToken");
-const CustomerSignIn = require("../controllers/auth/customers/sign_in");
-const CustomerSignUp = require("../controllers/auth/customers/sign_up");
+import useCheckCustomerEmail from '../middlewares/customers/useCheckExistingEmail.js';
+import VerifyCustomerToken from '../middlewares/customers/verifyToken.js';
+import CustomerSignIn from '../controllers/auth/customers/sign_in.js';
+import CustomerSignUp from '../controllers/auth/customers/sign_up.js';
 
 // drivers 
-const apiGuardDrivers = require("../middlewares/drivers/apiGuard");
-const useCheckDriverEmail = require("../middlewares/drivers/useCheckExistingEmail");
-const VerifyDriverToken = require("../middlewares/drivers/verifyToken");
-const DriverSignIn = require("../controllers/auth/drivers/sign_in");
-const DriverSignUp = require("../controllers/auth/drivers/sign_up");
-const DriverSignUpOnboard = require("../controllers/auth/drivers/sign_up_test");
+import apiGuardDrivers from '../middlewares/drivers/apiGuard.js';
+import useCheckDriverEmail from '../middlewares/drivers/useCheckExistingEmail.js';
+import VerifyDriverToken from '../middlewares/drivers/verifyToken.js';
+import DriverSignIn from '../controllers/auth/drivers/sign_in.js';
+import DriverSignUp from '../controllers/auth/drivers/sign_up.js';
+import DriverSignUpOnboard from '../controllers/auth/drivers/sign_up_test.js';
 
-const { OnboardingV1, OnboardingV2, OnboardingV3 } = require("../controllers/auth/drivers/onboarding");
-const dynamicFieldName = require("../middlewares/setFileName");
-const resetPassword = require("../controllers/auth/resetpassword");
-const updateCurrentPassword = require("../controllers/auth/updateCurrentPassword");
-const { usersCollection, driversCollection, SUPPORTEDMETHOD } = require("../config");
-const apiGuard = require("../middlewares/customers/apiGuard");
-const getUserData = require("../controllers/auth/getUserData");
-const updateUserProfile = require("../controllers/auth/customers/updateProfile");
+import { OnboardingV1, OnboardingV2, OnboardingV3 } from '../controllers/auth/drivers/onboarding.js';
+import dynamicFieldName from '../middlewares/setFileName.js';
+import resetPassword from '../controllers/auth/resetpassword.js';
+import updateCurrentPassword from '../controllers/auth/updateCurrentPassword.js';
+import config from '../config.js';
+import apiGuard from '../middlewares/customers/apiGuard.js';
+import getUserData from '../controllers/auth/getUserData.js';
+import updateUserProfile from '../controllers/auth/customers/updateProfile.js';
+
+let { usersCollection, driversCollection, SUPPORTEDMETHOD } = config;
 
 const router = express.Router();
 
 
 // driver auth 
 router.get('/driver/:user_id', getUserData(driversCollection));
-router.post('/driver/sign_up', withMethodGuard, uploadMultipleFiles, useCheckDriverEmail, DriverSignUpOnboard);
+router.post('/driver/sign_up', withMethodGuard(SUPPORTEDMETHOD), uploadMultipleFiles, useCheckDriverEmail, DriverSignUpOnboard);
 router.post('/driver/register', withMethodGuard(SUPPORTEDMETHOD), useCheckDriverEmail, DriverSignUp);
 router.post('/driver/login', withMethodGuard(SUPPORTEDMETHOD), VerifyDriverToken, DriverSignIn);
 router.post('/driver/user-forget-password-reset', withMethodGuard(SUPPORTEDMETHOD), resetPassword(driversCollection));
@@ -49,4 +51,4 @@ router.post('/customer/update-profile', withMethodGuard(SUPPORTEDMETHOD), apiGua
 router.post('/customer/user-forget-password-reset', withMethodGuard(SUPPORTEDMETHOD), resetPassword(usersCollection));
 router.post('/customer/update-password', withMethodGuard(SUPPORTEDMETHOD), apiGuard, updateCurrentPassword(usersCollection));
 
-module.exports = router;
+export default router;

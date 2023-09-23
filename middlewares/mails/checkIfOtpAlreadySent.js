@@ -18,7 +18,6 @@ const CheckIfOtpAlreadySent = async (req, res, next) => {
 
         if (user && user.user_verification) {
 
-
             if (!getOtp) {
                 await Drivers.findByIdAndUpdate({ _id: user._id }, { $set: { user_verification: null } }, { new: true });
                 next();

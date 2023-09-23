@@ -1,6 +1,8 @@
-const { HttpStatusCodes, roles } = require('../../config');
-const jwt = require("jsonwebtoken");
-const Users = require('../../database/models/User');
+import config from '../../config.js';
+import jwt from "jsonwebtoken";
+import Users from '../../database/models/User.js';
+
+let { HttpStatusCodes, roles } = config;
 
 const apiGuard = async (req, res, next) => {
 
@@ -43,4 +45,4 @@ const apiGuard = async (req, res, next) => {
     }
 };
 
-module.exports = apiGuard;
+export default apiGuard;

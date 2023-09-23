@@ -1,8 +1,10 @@
-const Files = require("../../../database/models/File");
-const handleError = require("../../../utils/ReturnError");
-const { imageURL } = require('../../../config');
-const Users = require("../../../database/models/User");
-const Drivers = require("../../../database/models/Driver");
+import Files from "../../../database/models/File.js";
+import handleError from "../../../utils/ReturnError.js";
+import config from '../../../config.js';
+import Users from "../../../database/models/User.js";
+import Drivers from "../../../database/models/Driver.js";
+
+let { imageURL } = config;
 
 const updateUserProfile = async (req, res) => {
     try {
@@ -10,7 +12,7 @@ const updateUserProfile = async (req, res) => {
         let user = req.user;
         let data = req.body;
         let file = req.file ?? null;
-        let {email} = data;
+        let { email } = data;
 
         if (!data) {
             return res.status(400).json({ msg: "Please provide data to update profile" });
@@ -60,4 +62,4 @@ const updateUserProfile = async (req, res) => {
     }
 };
 
-module.exports = updateUserProfile;
+export default updateUserProfile;

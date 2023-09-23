@@ -1,5 +1,7 @@
-const { HttpStatusCodes } = require("../../config");
-const Orders = require("../../database/models/Order");
+import config from "../../config.js";
+import Orders from "../../database/models/Order.js";
+
+let  { HttpStatusCodes } = config;
 
 const getOrderById = async (req, res) => {
     try {
@@ -24,4 +26,4 @@ const getOrderById = async (req, res) => {
     }
 };
 
-module.exports = getOrderById;
+export default getOrderById;

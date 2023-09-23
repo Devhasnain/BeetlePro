@@ -1,8 +1,9 @@
-const { HttpStatusCodes } = require("../../../config");
-const Orders = require("../../../database/models/Order");
-const { order } = require('../../../config');
+import config from "../../../config.js";
+import Orders from "../../../database/models/Order.js";
 
-const { accept, delivered } = order;
+let  { HttpStatusCodes, order } = config;
+
+const { accept, delivered, cancel } = order;
 
 const completeOrderById = async (req, res) => {
     try {
@@ -21,6 +22,10 @@ const completeOrderById = async (req, res) => {
             return res.status(404).json({ msg: `Order not found with this id:${order_id}, for driver:${user.user_id}` });
         };
 
+        if (order.order_status === cancel) {
+            return res.status(400).json({ msg: `Order ${order.order_id} has been canceled` });
+        }
+
         if (order.order_status !== accept) {
             return res.status(400).json({ msg: `Order ${order.order_id} is not yet accepted!` });
         }
@@ -38,4 +43,4 @@ const completeOrderById = async (req, res) => {
     }
 };
 
-module.exports = completeOrderById;
+export default completeOrderById;

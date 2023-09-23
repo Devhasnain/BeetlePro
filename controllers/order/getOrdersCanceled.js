@@ -1,6 +1,8 @@
-const Orders = require("../../database/models/Order");
-const handleError = require("../../utils/ReturnError")
-const { order, driversCollection, usersCollection } = require('../../config');
+import Orders from "../../database/models/Order.js";
+import handleError from "../../utils/ReturnError.js"
+import config from '../../config.js';
+
+let { order, driversCollection, usersCollection } = config;
 
 const getOrdersCanceled = (collection) => {
     return async (req, res) => {
@@ -29,4 +31,4 @@ const getOrdersCanceled = (collection) => {
     };
 };
 
-module.exports = getOrdersCanceled;
+export default getOrdersCanceled;

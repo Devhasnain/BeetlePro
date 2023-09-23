@@ -1,7 +1,9 @@
-const { HttpStatusCodes } = require("../../../config");
-const Drivers = require("../../../database/models/Driver");
-const Files = require("../../../database/models/File");
-const { upload } = require('../../uploads/Upload');
+import config from "../../../config.js";
+import Drivers from "../../../database/models/Driver.js";
+import Files from "../../../database/models/File.js";
+import { upload } from '../../uploads/Upload.js';
+
+let { HttpStatusCodes } = config;
 
 const OnboardingV1 = async (req, res) => {
     try {
@@ -107,4 +109,4 @@ const OnboardingV3 = async (req, res) => {
     }
 };
 
-module.exports = { OnboardingV1, OnboardingV2, OnboardingV3 };
+export { OnboardingV1, OnboardingV2, OnboardingV3 };

@@ -1,4 +1,4 @@
-const cache = require("memory-cache");
+import cache from "memory-cache";
 function cacheMiddleware(duration) {
     return (req, res, next) => {
         const key = `__express__${req.originalUrl || req.url}`;
@@ -19,4 +19,4 @@ function cacheMiddleware(duration) {
     };
 };
 
-module.exports = cacheMiddleware;
+export default cacheMiddleware;

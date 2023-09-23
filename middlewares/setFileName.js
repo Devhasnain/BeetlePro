@@ -1,4 +1,6 @@
-const { HttpStatusCodes } = require("../config");
+import config from "../config.js";
+
+let { HttpStatusCodes } = config;
 
 function dynamicFieldName(req, res, next) {
     try {
@@ -17,4 +19,4 @@ function dynamicFieldName(req, res, next) {
     }
 };
 
-module.exports = dynamicFieldName;
+export default dynamicFieldName;

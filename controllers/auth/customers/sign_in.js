@@ -1,8 +1,8 @@
-const zod = require('zod');
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const _ = require('lodash');
-const Users = require('../../../database/models/User');
+import zod from 'zod';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import _ from 'lodash';
+import Users from '../../../database/models/User.js';
 
 const extractFields = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'user_image'];
 
@@ -46,4 +46,4 @@ const SignIn = async (req, res) => {
     }
 };
 
-module.exports = SignIn;
+export default SignIn;

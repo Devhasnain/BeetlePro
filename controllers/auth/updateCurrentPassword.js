@@ -1,7 +1,9 @@
-const { HttpStatusCodes, driversCollection, usersCollection } = require("../../config");
-const Drivers = require("../../database/models/Driver");
-const bcrypt = require("bcrypt");
-const Users = require("../../database/models/User");
+import config from "../../config.js";
+import Drivers from "../../database/models/Driver.js";
+import bcrypt from "bcrypt";
+import Users from "../../database/models/User.js";
+
+let { HttpStatusCodes, driversCollection, usersCollection } = config;
 
 const updateCurrentPassword = (collection) => {
     return async (req, res) => {
@@ -54,4 +56,4 @@ const updateCurrentPassword = (collection) => {
     }
 };
 
-module.exports = updateCurrentPassword;
+export default updateCurrentPassword;

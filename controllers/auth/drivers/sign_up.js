@@ -1,9 +1,8 @@
-const bcrypt = require('bcrypt');
-const _ = require("lodash");
-const connectToDatabase = require("../../../database/DBconnection");
-const { v4: uuidv4 } = require('uuid');
-const jwt = require("jsonwebtoken");
-const Drivers = require('../../../database/models/Driver');
+import bcrypt from 'bcrypt';
+import _ from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+import jwt from 'jsonwebtoken';
+import Drivers from '../../../database/models/Driver.js';
 
 const extractField = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'user_image'];
 
@@ -20,7 +19,7 @@ const SignUp = async (req, res) => {
             ...userData,
             password,
             user_id,
-            role_type:userData.role_type
+            role_type: userData.role_type
         }
 
         let registerUser = await Drivers.create(newUser);
@@ -33,7 +32,7 @@ const SignUp = async (req, res) => {
 
         let user = _.pick(savedUser, extractField);
 
-        let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '5h' });
 
         return res.status(200).json({ ...user, token });
 
@@ -42,4 +41,4 @@ const SignUp = async (req, res) => {
     }
 };
 
-module.exports = SignUp;
+export default SignUp;

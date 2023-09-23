@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const DriverSchema = new mongoose.Schema({
     vehicle_type: { type: String },
@@ -30,4 +30,4 @@ const DriverSchema = new mongoose.Schema({
 );
 
 const Drivers = mongoose.models.Driver || mongoose.model("Driver", DriverSchema);
-module.exports = Drivers;
+export default Drivers

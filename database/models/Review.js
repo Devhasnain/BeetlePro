@@ -1,21 +1,15 @@
 const mongoose = require("mongoose");
 
 const ReviewsSchema = new mongoose.Schema({
-    driver: {
-        driver_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Driver',
+    userRef: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: function () {
+            if (this.isDriver) {
+                return 'Driver';
+            } else {
+                return 'User';
+            }
         },
-        rating: { type: Number },
-        text: { type: String }
-    },
-    customer: {
-        customer_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-        },
-        rating: { type: Number },
-        text: { type: String }
     },
     order_id: {
         type: mongoose.Schema.Types.ObjectId,

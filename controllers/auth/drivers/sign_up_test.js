@@ -1,11 +1,12 @@
-const bcrypt = require('bcrypt');
-const _ = require("lodash");
-const Drivers = require('../../../database/models/Driver');
-const Files = require('../../../database/models/File');
-// const Files = require('../../../database/models/File');
-const {imageURL} = require('../../../config');
+import bcrypt from 'bcrypt';
+import _ from 'lodash';
+import config from '../../../config.js';
+import Drivers from '../../../database/models/Driver.js';
+import Files from '../../../database/models/File.js';
 
-let url = imageURL
+let { imageURL } = config;
+
+let url = imageURL;
 
 const SignUpTest = async (req, res) => {
     try {
@@ -65,5 +66,4 @@ const SignUpTest = async (req, res) => {
         return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? 'Internal Server Error' })
     }
 };
-
-module.exports = SignUpTest;
+export default SignUpTest

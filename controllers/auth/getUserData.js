@@ -1,6 +1,8 @@
-const { HttpStatusCodes, driversCollection, usersCollection } = require("../../config");
-const Drivers = require("../../database/models/Driver");
-const Users = require("../../database/models/User");
+import config from '../../config.js'; 
+import Drivers from '../../database/models/Driver.js';
+import Users from '../../database/models/User.js';
+
+let { HttpStatusCodes, driversCollection, usersCollection } = config;
 
 const getUserData = (collection) => {
     return async (req, res) => {
@@ -35,4 +37,4 @@ const getUserData = (collection) => {
     }
 };
 
-module.exports = getUserData;
+export default getUserData;
