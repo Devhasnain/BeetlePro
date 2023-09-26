@@ -11,32 +11,18 @@ const createReview = async (req, res) => {
 
     try {
 
-        // let user = req.user;
+        let user = req.user;
 
-        // let order = await Orders.findOne({ order_id, sender_id: user._id, driver_id });
+        const { order_id, rating, text } = req.body;
 
-        // if (!order) {
-        //     return res.status(404).json({ msg: "Order not found!" });
-        // };
-
-        // if (order.order_status !== delivered) {
-        //     return res.status(400).json({ msg: "Order has not yet been delivered!" });
-        // }
-
-        let id = ''
-
-        const { order_id } = req.body;
-
-        let order = await Orders.findOne({ order_id });
-
-        // let getReviewByUserId = await Reviews.findOne({ userRef: "user db obj id will come here", order_id });
+        let order = await Orders.findOne({ order_id, sender_id: user._id });
 
         if (!order) {
             return res.status(404).json({ msg: `Order:${order_id} not found!` });
         }
 
         if (order.order_status !== delivered) {
-            return res.status(400).json({ msg: `You can't write a review for this order ${order_id}` });
+            return res.status(400).json({ msg: `You can't write a review for this order ${order_id}, Or hasn't been delivered!` });
         }
 
         if (order?.sender_order_review_id) {
@@ -44,8 +30,11 @@ const createReview = async (req, res) => {
         }
 
         let createReview = await Reviews.create({
-            userRef: 'user id will come here',
-            order_id: 'order_id will come here',
+            isDriver: false,
+            userRef: user._id,
+            order_id: order._id,
+            rating,
+            text
         });
 
         let saveReview = await createReview.save();
@@ -54,25 +43,9 @@ const createReview = async (req, res) => {
             return res.status(400).json({ msg: `Some error occured on the server, Unable to write a review for order:${order_id}` });
         }
 
-        let updateOrderReview = await Orders.findOneAndUpdate({ order_id }, { $set: { sender_order_review_id: saveReview._id } });
+        let updatedOrder = await Orders.findOneAndUpdate({ order_id }, { $set: { sender_order_review_id: saveReview._id } });
 
-        // let review = await Reviews.create({
-        //     driver: {
-        //         driver_id,
-        //         rating: 5,
-        //         text: "testing review"
-        //     },
-        //     customer: {
-        //         customer_id: user_id,
-        //         rating: 5,
-        //         text: "testing review"
-        //     },
-        //     order_id
-        // });
-
-        // await review.save();
-
-        return res.status(200).json({ review })
+        return res.status(200).json({ updatedOrder })
 
     } catch (error) {
         const response = handleError(error);

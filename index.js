@@ -13,9 +13,9 @@ import Users from './database/models/User.js';
 import Drivers from './database/models/Driver.js';
 import Orders from './database/models/Order.js';
 import Files from './database/models/File.js';
+import ReviewRoute from './routes/review.js';
 
 const app = express();
-
 
 app.use(helmet());
 app.use(cors());
@@ -36,9 +36,11 @@ cacheMiddleware();
 
 DBconnection();
 
-app.use('/beetlepro/api/auth', AuthRoute);
-app.use('/beetlepro/api/order', OrderRoute);
-app.get('/beetlepro/api/data', async (req, res) => {
+app.use('/auth', AuthRoute);
+app.use('/order', OrderRoute);
+app.use('/review', ReviewRoute);
+
+app.get('/data', async (req, res) => {
     try {
 
         let customers = await Users.find({});
@@ -54,7 +56,7 @@ app.get('/beetlepro/api/data', async (req, res) => {
     }
 })
 
-app.get('/beetlepro/api/', (req, res) => {
+app.get('/', (req, res) => {
     return res.status(200).json({ msg: "hellow" })
 })
 

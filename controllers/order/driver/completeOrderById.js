@@ -1,7 +1,7 @@
 import config from "../../../config.js";
 import Orders from "../../../database/models/Order.js";
 
-let  { HttpStatusCodes, order } = config;
+let { HttpStatusCodes, order } = config;
 
 const { accept, delivered, cancel } = order;
 
@@ -34,7 +34,7 @@ const completeOrderById = async (req, res) => {
             return res.status(400).json({ msg: `Order ${order.order_id} has already been delivered!` });
         }
 
-        await Orders.findOneAndUpdate({ _id: order._id }, { $set: { order_status: delivered } }, { new: true });
+        await Orders.findOneAndUpdate({ _id: order._id }, { $set: { driver_order_status: delivered } }, { new: true });
 
         return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!` });
 

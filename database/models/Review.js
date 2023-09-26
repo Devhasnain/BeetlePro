@@ -16,6 +16,8 @@ const ReviewsSchema = new mongoose.Schema({
         ref: 'Order',
         required: true
     },
+    rating: { type: Number },
+    text: { type: String }
 
 },
     {

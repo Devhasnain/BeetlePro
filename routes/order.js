@@ -7,6 +7,8 @@ import driverCancelOrder from '../controllers/order/driver/cancelOrder.js';
 // customer functions 
 import customerapiGuard from "../middlewares/customers/apiGuard.js";
 import customerCancelOrder from '../controllers/order/customers/cancelOrder.js';
+import completeUserOrderById from "../controllers/order/customers/completeOrder.js";
+
 
 import CreateOrder from "../controllers/order/createOrder.js";
 import getOrderById from "../controllers/order/getOrderById.js";
@@ -38,6 +40,7 @@ router.get('/get-completed-customer-orders', withMethodGuard(SUPPORTEDGETMETHOD)
 // customers post routes 
 router.post('/create', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, CreateOrder);
 router.post('/cancel-user-order', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, customerCancelOrder);
+router.post('/complete-user-order', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, completeUserOrderById);
 
 
 // drivers get routes
