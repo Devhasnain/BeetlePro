@@ -14,8 +14,7 @@ const ReviewsSchema = new mongoose.Schema({
         ref: "Driver"
     },
     rating: { type: Number },
-    text: { type: String }
-
+    text: { type: String },
 },
     {
         timestamps: true

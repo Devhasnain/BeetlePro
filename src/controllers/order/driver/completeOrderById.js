@@ -26,15 +26,19 @@ const completeOrderById = async (req, res) => {
             return res.status(400).json({ msg: `Order ${order.order_id} has been canceled` });
         }
 
-        if (order.order_status !== accept) {
-            return res.status(400).json({ msg: `Order ${order.order_id} is not yet accepted!` });
-        }
-
         if (order.order_status === delivered) {
             return res.status(400).json({ msg: `Order ${order.order_id} has already been delivered!` });
         }
 
-        await Orders.findOneAndUpdate({ _id: order._id }, { $set: { driver_order_status: delivered } }, { new: true });
+        if (order.order_status !== accept) {
+            return res.status(400).json({ msg: `Order ${order.order_id} is not yet accepted!` });
+        }
+
+        await Orders.findOneAndUpdate({ _id: order._id }, {
+            $set: {
+                driver_order_status: delivered
+            }
+        }, { new: true });
 
         return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!` });
 

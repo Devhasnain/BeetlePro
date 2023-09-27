@@ -34,7 +34,14 @@ const cancelOrder = async (req, res) => {
             return res.status(400).json({ msg: `Bad request: Order:${order_id} has already been canceled!` });
         }
 
-        await Orders.findByIdAndUpdate({ _id: order._id }, { $set: { order_status: cancel, driver_order_status: driver_order_status.canceled, driver_order_cancellation_reason: driver_order_cancellation_reason ?? "No cancellation reason provided!" } })
+        await Orders.findByIdAndUpdate({ _id: order._id }, {
+            $set:
+            {
+                order_status: cancel,
+                driver_order_status: driver_order_status.canceled,
+                driver_order_cancellation_reason: driver_order_cancellation_reason ?? "No cancellation reason provided!"
+            }
+        })
 
         return res.status(200).json({ msg: `Order:${order_id} has been canceled successfuly.` })
 

@@ -20,6 +20,8 @@ import getOrdersInProgress from "../controllers/order/getOrdersInProgress.js";
 import getOrdersCanceled from "../controllers/order/getOrdersCanceled.js";
 import getOrdersCompleted from "../controllers/order/getOrdersCompleteted.js";
 import getNewOrders from "../controllers/order/driver/getNewOrders.js";
+import reactivateOrder from "../controllers/order/customers/reactivateOrder.js";
+import getDeliveredOrdersByRider from "../controllers/order/customers/getDeliveredOrdersByRider.js";
 
 let { SUPPORTEDGETMETHOD, SUPPORTEDMETHOD, driversCollection, usersCollection } = config;
 
@@ -36,10 +38,12 @@ router.get('/get/:id', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, ge
 router.get('/get-inprogress-customer-orders', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getOrdersInProgress(usersCollection));
 router.get('/get-canceled-customer-orders', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getOrdersCanceled(usersCollection));
 router.get('/get-completed-customer-orders', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getOrdersCompleted(usersCollection));
+router.get('/get-user-delivered-orders-by-rider', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getDeliveredOrdersByRider);
 
 // customers post routes 
 router.post('/create', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, CreateOrder);
 router.post('/cancel-user-order', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, customerCancelOrder);
+router.post('/reactivate-user-order', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, reactivateOrder);
 router.post('/complete-user-order', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, completeUserOrderById);
 
 

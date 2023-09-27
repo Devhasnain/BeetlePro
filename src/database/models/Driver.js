@@ -25,7 +25,7 @@ const DriverSchema = new mongoose.Schema({
     total_ratings: { type: Number },
     reviews: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Review',
     }]
 },
     {

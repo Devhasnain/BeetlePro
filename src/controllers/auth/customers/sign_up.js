@@ -31,18 +31,17 @@ const SignUp = async (req, res) => {
         let savedUser = await registerUser.save();
 
         if (!savedUser) {
-            return res.status(400).json({ msg: "Unknow error occured while registeration, please try again!" });
+            return res.status(400).json({ msg: "Unknow error occured while registeration, please try again!", status: false });
         }
 
         let user = _.pick(savedUser, extractField);
 
         let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        return res.status(200).json({ user, token });
+        return res.status(200).json({ user, token, status: true });
 
     } catch (error) {
-        console.log(error)
-        return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? 'Internal Server Error' })
+        return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? 'Internal Server Error', status: false })
     }
 };
 

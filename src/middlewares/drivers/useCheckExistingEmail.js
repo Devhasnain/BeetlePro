@@ -19,7 +19,7 @@ const useCheckExistingEmail = async (req, res, next) => {
         const requestBody = await requestBodyValidation.safeParseAsync(req.body);
 
         if (!requestBody.success) {
-            return res.status(401).json({ msg: `${requestBody.error.name}, data validation faild!` })
+            return res.status(401).json({ msg: `${requestBody.error.name}, data validation faild!`, status: false })
         }
 
         const { email, role_type } = requestBody.data;
@@ -27,19 +27,19 @@ const useCheckExistingEmail = async (req, res, next) => {
         let checkIfEmailinCutomers = await Users.findOne({ email });
 
         if (checkIfEmailinCutomers) {
-            return res.status(400).json({ msg: "User already exists with this email!" })
+            return res.status(400).json({ msg: "User already exists with this email!", status: false })
         };
 
         let checkIfEmailinDrivers = await Drivers.findOne({ email });
 
         if (checkIfEmailinDrivers) {
-            return res.status(400).json({ msg: "User already exists with this email!" })
+            return res.status(400).json({ msg: "User already exists with this email!", status: false })
         };
 
         let role = roles.find((item) => item.id === role_type);
 
         if (!role) {
-            return res.status(404).json({ msg: `Role didn't found with id:${role_type}` })
+            return res.status(404).json({ msg: `Role didn't found with id:${role_type}`, status: false })
         }
 
         req.user = req.body;
@@ -49,8 +49,7 @@ const useCheckExistingEmail = async (req, res, next) => {
         next();
 
     } catch (error) {
-        console.log(error)
-        return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? "Internal Server Error" })
+        return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? "Internal Server Error", status:false })
     }
 };
 

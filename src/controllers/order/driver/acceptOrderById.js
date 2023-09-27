@@ -4,7 +4,7 @@ import Orders from "../../../database/models/Order.js";
 
 let { HttpStatusCodes, order } = config;
 
-const { accept, cancel } = order;
+const { accept, cancel, delivered } = order;
 
 const acceptOrderById = async (req, res) => {
     try {
@@ -31,7 +31,16 @@ const acceptOrderById = async (req, res) => {
             return res.status(200).json({ msg: `Order ${order.order_id} is active!` });
         }
 
-        await Orders.findOneAndUpdate({ _id: order._id }, { $set: { order_status: accept, driver_order_status: accept } }, { new: true });
+        if (order.order_status === delivered) {
+            return res.status(200).json({ msg: `Order ${order.order_id} is already been delivered!` });
+        }
+
+        await Orders.findOneAndUpdate({ _id: order._id }, {
+            $set: {
+                order_status: accept,
+                driver_order_status: accept
+            }
+        }, { new: true });
 
         return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!` });
 

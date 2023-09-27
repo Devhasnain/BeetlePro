@@ -30,11 +30,21 @@ const completeOrderById = async (req, res) => {
             return res.status(400).json({ msg: `Order ${order.order_id} is not yet accepted!` });
         }
 
+        if (order.driver_order_status !== delivered) {
+            return res.status(400).json({ msg: `Order ${order.order_id} is not yet delivered by the driver!` });
+        }
+
         if (order.order_status === delivered) {
             return res.status(400).json({ msg: `Order ${order.order_id} has already been completed!` });
         }
 
-        await Orders.findOneAndUpdate({ _id: order._id }, { $set: { sender_order_status: delivered, order_status: delivered, driver_order_status: delivered } }, { new: true });
+        await Orders.findOneAndUpdate({ _id: order._id }, {
+            $set: {
+                sender_order_status: delivered,
+                order_status: delivered,
+                driver_order_status: delivered
+            }
+        }, { new: true });
 
         return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!` });
 

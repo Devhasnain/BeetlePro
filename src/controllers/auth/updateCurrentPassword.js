@@ -13,7 +13,7 @@ const updateCurrentPassword = (collection) => {
             const user_id = user._id;
 
             if (currentpassword === newpassword) {
-                return res.status(400).json({ msg: "Choose a new password instead of current password" });
+                return res.status(400).json({ msg: "Choose a new password instead of current password", status: false });
             }
 
             if (collection === driversCollection) {
@@ -23,13 +23,13 @@ const updateCurrentPassword = (collection) => {
                 let comparePassword = await bcrypt.compare(currentpassword, userPassword.password);
 
                 if (!comparePassword) {
-                    return res.status(400).json({ msg: "Incorrect password" });
+                    return res.status(400).json({ msg: "Incorrect password", status: false });
                 }
 
                 const hashPassword = await bcrypt.hash(newpassword, 12);
 
                 await Drivers.findOneAndUpdate({ _id: user_id }, { $set: { password: hashPassword } }, { new: true });
-                return res.status(200).json({ msg: "Password updated successfuly" });
+                return res.status(200).json({ msg: "Password updated successfuly", status: true });
             }
 
             if (collection === usersCollection) {
@@ -39,19 +39,18 @@ const updateCurrentPassword = (collection) => {
                 let comparePassword = await bcrypt.compare(currentpassword, userPassword.password);
 
                 if (!comparePassword) {
-                    return res.status(400).json({ msg: "Incorrect password" });
+                    return res.status(400).json({ msg: "Incorrect password", status: false });
                 }
 
                 const hashPassword = await bcrypt.hash(newpassword, 12);
 
                 await Users.findOneAndUpdate({ _id: user_id }, { $set: { password: hashPassword } }, { new: true });
-                return res.status(200).json({ msg: "Password updated successfuly" });
+                return res.status(200).json({ msg: "Password updated successfuly", status: true });
             }
 
 
-
         } catch (error) {
-            return res.status(error?.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "Interanal Server Error" })
+            return res.status(error?.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "Interanal Server Error", status: false })
         }
     }
 };
