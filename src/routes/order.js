@@ -26,7 +26,7 @@ let { SUPPORTEDGETMETHOD, SUPPORTEDMETHOD, driversCollection, usersCollection } 
 const router = express.Router();
 
 // order get routes 
-router.get('/get', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getUserOrders);
+router.get('/get-all-orders', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getUserOrders);
 router.get('/get/:id', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getOrderById);
 
 

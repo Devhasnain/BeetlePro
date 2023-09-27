@@ -21,7 +21,12 @@ const DriverSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     role_type: { type: Number, required: true },
     id: { type: mongoose.Types.ObjectId },
-    user_id: { type: String }
+    user_id: { type: String },
+    total_ratings: { type: Number },
+    reviews: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }]
 },
     {
         timestamps: true

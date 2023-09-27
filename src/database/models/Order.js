@@ -22,10 +22,6 @@ const OrdersSchema = new mongoose.Schema({
     },
     sender_order_status: { type: String },
     sender_order_cancellation_reason: { type: String },
-    sender_order_review_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Review',
-    },
     sender_name: { type: String },
     sender_address: { type: String },
     sender_phonenumber: { type: String },
@@ -41,10 +37,6 @@ const OrdersSchema = new mongoose.Schema({
     driver_quotation: { type: String },
     driver_order_status: { type: String },
     driver_order_cancellation_reason: { type: String },
-    driver_order_review_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Review',
-    },
     order_shipping_assurance: { type: String },
     order_subtotal_price: { type: String },
     order_status: { type: String },

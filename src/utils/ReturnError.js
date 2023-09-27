@@ -21,8 +21,6 @@ function handleError(error) {
         statusCode = 500;
     }
 
-    console.error(error);
-
     return {
         statusCode,
         body: JSON.stringify({ error: errorMessage }),
