@@ -14,6 +14,7 @@ import Drivers from './database/models/Driver.js';
 import Orders from './database/models/Order.js';
 import Files from './database/models/File.js';
 import ReviewRoute from './routes/review.js';
+import FaqsRoute from './routes/faq.js';
 import morgan from 'morgan';
 import * as middleware from './utils/loggerMiddleware.js';
 
@@ -40,6 +41,7 @@ DBconnection();
 app.use('/auth', AuthRoute);
 app.use('/order', OrderRoute);
 app.use('/review', ReviewRoute);
+app.use('/faq', FaqsRoute);
 
 app.get('/data', async (req, res) => {
     try {

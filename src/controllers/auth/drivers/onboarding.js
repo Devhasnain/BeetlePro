@@ -11,7 +11,7 @@ const OnboardingV1 = async (req, res) => {
         const files = req.files;
 
         if (!files.length) {
-            return res.status(401).json({ msg: "select files complete onboarding" });
+            return res.status(401).json({ msg: "select files complete onboarding", status: false });
         }
 
         files.forEach(async (element) => {
@@ -27,9 +27,9 @@ const OnboardingV1 = async (req, res) => {
             await Drivers.findByIdAndUpdate({ _id: id }, { $set: { [fieldname]: uploadFile._id } }, { new: true });
         });
 
-        return res.status(200).json({ msg: "done" })
+        return res.status(200).json({ msg: "Files have been uploaded!", status: true })
     } catch (error) {
-        return res.status(error.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "internal server error" });
+        return res.status(error.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "internal server error", status: false });
     }
 };
 
@@ -40,7 +40,7 @@ const OnboardingV2 = async (req, res) => {
 
         if (Object.keys(files).length === 0) {
 
-            return res.status(401).json({ msg: "select files complete onboarding" });
+            return res.status(401).json({ msg: "select files complete onboarding", status: false });
 
         }
 
@@ -74,9 +74,9 @@ const OnboardingV2 = async (req, res) => {
 
 
 
-        return res.status(200).json({ msg: "done" })
+        return res.status(200).json({ msg: "Files are uploaded!", status: true })
     } catch (error) {
-        return res.status(error.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "internal server error" });
+        return res.status(error.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "internal server error", status: false });
     }
 };
 
@@ -88,7 +88,7 @@ const OnboardingV3 = async (req, res) => {
         upload.single(req.fieldName)(req, res, async function (err) {
 
             if (err) {
-                return res.status(400).json({ error: err.message });
+                return res.status(400).json({ error: err.message, status: false });
             }
 
             let uploadFile = await Files.create({
@@ -101,11 +101,11 @@ const OnboardingV3 = async (req, res) => {
 
             await Drivers.findByIdAndUpdate({ _id: id }, { $set: { [fieldname]: uploadFile._id } }, { new: true });
 
-            res.send('File uploaded successfully');
+            res.send({ msg: 'File uploaded successfully', status: true });
         });
 
     } catch (error) {
-        return res.status(error.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "internal server error" });
+        return res.status(error.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "internal server error", status:false });
     }
 };
 
