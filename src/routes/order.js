@@ -17,11 +17,13 @@ import getOrdersCompleted from "../controllers/order/getOrdersCompleteted.js";
 import getNewOrders from "../controllers/order/driver/getNewOrders.js";
 import pickedUpOrder from "../controllers/order/driver/pickedUpOrder.js";
 import getOrderStatus from "../controllers/order/customers/getOrderStatus.js";
+import getAllDrivers from "../controllers/order/getAllDrivers.js";
 
 let { SUPPORTEDGETMETHOD, SUPPORTEDMETHOD, driversCollection, usersCollection } = config;
 
 const router = express.Router();
 
+router.get('/get-all-drivers', getAllDrivers); // get drivers list
 router.get('/get-all-orders', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getUserOrders);   // get user orders 
 router.get('/get/:id', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getOrderById); //get order by id
 router.get('/get-canceled-customer-orders', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getOrdersCanceled(usersCollection));  // get customer canceled orders

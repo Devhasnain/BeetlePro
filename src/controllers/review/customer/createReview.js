@@ -7,15 +7,15 @@ import calculateTotalRating from "../../../utils/getTotalRating.js";
 
 let { order } = config;
 
-let { delivered } = order;
+let { completed } = order;
 
 const createReview = async (req, res) => {
 
     try {
 
-        // let user = req.user;
+        let user = req.user;
 
-        const { order_id, rating, text, driver_id, user_id } = req.body;
+        const { order_id, rating, text, driver_id } = req.body;
 
         let driver = await Drivers.findOne({ user_id: driver_id });
 
@@ -25,7 +25,7 @@ const createReview = async (req, res) => {
 
         let order = await Orders.findOne({
             order_id,
-            // sender_id: user._id,
+            sender_id: user._id,
             driver_id: driver._id
         });
 
@@ -33,17 +33,13 @@ const createReview = async (req, res) => {
             return res.status(404).json({ msg: `Order not found!` });
         }
 
-        if (order.order_status !== delivered) {
-            return res.status(400).json({ msg: `You can't write a review for this order ${order_id}, Or hasn't been delivered!` });
+        if (order.order_status !== completed) {
+            return res.status(400).json({ msg: `The order hasn't been completed! You can't add review to this order!` });
         }
 
-        let review = await Reviews.find({
-            order_id: order._id,
-            // userRef: user._id,
-            driver_id: driver._id
-        });
+        let review = await Reviews.findOne({ order_id: order._id });
 
-        if (review?.length > 0) {
+        if (review) {
             return res.status(400).json({ msg: "You already have added review to this order!" });
         }
 
@@ -57,17 +53,15 @@ const createReview = async (req, res) => {
 
         let saveReview = await createReview.save();
 
-        if (!saveReview) {
-            return res.status(400).json({ msg: `Some error occured on the server, Unable to write a review for order:${order_id}` });
-        }
-
         if (driver?.reviews?.length) {
 
             let driverReviews = [...driver?.reviews, saveReview];
 
             let total_ratings = calculateTotalRating(driverReviews);
 
-            await Drivers.findByIdAndUpdate({ _id: driver._id }, { $push: { reviews: [saveReview._id] }, $set: { total_ratings } }, { new: true })
+            // driver.reviews = 
+
+            // await Drivers.findByIdAndUpdate({ _id: driver._id }, { $push: { reviews: [saveReview._id] }, $set: { total_ratings } }, { new: true })
 
         }
 
