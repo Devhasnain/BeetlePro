@@ -1,19 +1,17 @@
 import Orders from "../../../database/models/Order.js";
 import config from '../../../../config.js'
+import handleError from "../../../utils/ReturnError.js";
 
 let { order } = config;
 
 const getDeliveredOrdersByRider = async (req, res) => {
     try {
-
         let user = req.user;
-
         let orders = await Orders.findOne({ _id: user._id, driver_order_status: order.delivered });
-
-        return res.status(200).json(orders);
-
+        return res.status(200).json({ orders, status: true });
     } catch (error) {
-        return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? 'Internal Server Error' })
+        let response = handleError(error);
+        return res.status(response.statusCode).json({ msg: response.body, status: false })
     }
 };
 

@@ -14,7 +14,6 @@ const SignUp = async (req, res) => {
         if (!userData) {
             throw new Error('Unknow error occured while registration, please try again!')
         };
-
         let password = await bcrypt.hash(userData.password, 12);
 
         let user_id = uuidv4();
@@ -29,10 +28,6 @@ const SignUp = async (req, res) => {
         let registerUser = await Users.create(newUser);
 
         let savedUser = await registerUser.save();
-
-        if (!savedUser) {
-            return res.status(400).json({ msg: "Unknow error occured while registeration, please try again!", status: false });
-        }
 
         let user = _.pick(savedUser, extractField);
 

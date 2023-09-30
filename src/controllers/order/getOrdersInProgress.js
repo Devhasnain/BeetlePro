@@ -11,16 +11,13 @@ const getOrdersInProgress = (collection) => {
             let user = req.user;
 
             if (collection === usersCollection) {
-
-                let orders = await Orders.find({ order_status: order.accept, sender_id: user._id });
+                let orders = await Orders.find({ order_status: order.accept || order.picked_up, sender_id: user._id });
                 return res.status(200).json(orders);
             }
 
             if (collection === driversCollection) {
-
-                let orders = await Orders.find({ order_status: order.accept, driver_id: user._id });
+                let orders = await Orders.find({ order_status: order.accept || order.picked_up, driver_id: user._id });
                 return res.status(200).json(orders);
-
             }
 
 

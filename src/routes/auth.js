@@ -33,7 +33,7 @@ const router = express.Router();
 // driver auth 
 router.get('/driver/:user_id', getUserData(driversCollection));
 router.post('/driver/sign_up', withMethodGuard(SUPPORTEDMETHOD), uploadMultipleFiles, useCheckDriverEmail, DriverSignUpOnboard);
-router.post('/driver/register', withMethodGuard(SUPPORTEDMETHOD), useCheckDriverEmail, DriverSignUp);
+router.post('/driver/register', withMethodGuard(SUPPORTEDMETHOD), uploadMultipleFiles, useCheckDriverEmail, DriverSignUp);
 router.post('/driver/login', withMethodGuard(SUPPORTEDMETHOD), VerifyDriverToken, DriverSignIn);
 router.post('/driver/user-forget-password-reset', withMethodGuard(SUPPORTEDMETHOD), resetPassword(driversCollection));
 router.post('/driver/update-password', withMethodGuard(SUPPORTEDMETHOD), apiGuardDrivers, updateCurrentPassword(driversCollection));

@@ -1,10 +1,12 @@
-import Faqs from "../../database/models/Faqs";
-import handleError from "../../utils/ReturnError"
+import Faqs from "../../database/models/Faqs.js";
+import handleError from "../../utils/ReturnError.js"
 
 const getFaqById = async (req, res) => {
     try {
 
         let { faq_id } = req.params;
+
+        console.log(faq_id)
 
         let faq = await Faqs.findOne({ faq_id });
 

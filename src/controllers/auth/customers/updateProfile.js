@@ -42,9 +42,9 @@ const updateUserProfile = async (req, res) => {
                 await Users.findByIdAndUpdate({ _id: user._id }, { $set: { [key]: data[key], user_image: imagelink } }, { new: true });
             }
 
-            let updatedUser = await Users.findById(user._id).select('-password').lean().exec();
+            await Users.findById(user._id).select('-password').lean().exec();
 
-            return res.status(200).json({ msg: "Profile updated successfuly", user: updatedUser, status: false })
+            return res.status(200).json({ msg: "Profile updated successfuly", status: true })
 
         }
 
@@ -52,9 +52,9 @@ const updateUserProfile = async (req, res) => {
             await Users.findByIdAndUpdate({ _id: user._id }, { $set: { [key]: data[key] } }, { new: true });
         }
 
-        let updatedUser = await Users.findById(user._id).select('-password').lean().exec();
+        await Users.findById(user._id).select('-password').lean().exec();
 
-        return res.status(200).json({ msg: "Profile updated successfuly", user: updatedUser, status: false })
+        return res.status(200).json({ msg: "Profile updated successfuly", status: true })
 
     } catch (error) {
         let response = handleError(error);

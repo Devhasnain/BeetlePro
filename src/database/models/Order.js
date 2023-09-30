@@ -36,7 +36,6 @@ const OrdersSchema = new mongoose.Schema({
     },
     driver_quotation: { type: String },
     driver_order_status: { type: String },
-    driver_order_cancellation_reason: { type: String },
     order_shipping_assurance: { type: String },
     order_subtotal_price: { type: String },
     order_status: { type: String },

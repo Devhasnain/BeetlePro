@@ -41,7 +41,7 @@ DBconnection();
 app.use('/auth', AuthRoute);
 app.use('/order', OrderRoute);
 app.use('/review', ReviewRoute);
-app.use('/faq', FaqsRoute);
+app.use('/faqs', FaqsRoute);
 
 app.get('/data', async (req, res) => {
     try {

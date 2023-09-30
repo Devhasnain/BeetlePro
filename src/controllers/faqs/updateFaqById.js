@@ -1,12 +1,21 @@
-import Faqs from "../../database/models/Faqs";
-import handleError from "../../utils/ReturnError"
+import Faqs from "../../database/models/Faqs.js";
+import handleError from "../../utils/ReturnError.js"
 
 const getFaqById = async (req, res) => {
     try {
+        let { faq_id } = req.params;
+        let { title, paragraph } = req.body;
 
-        let { faq_id, title, paragraph } = req.body;
+        let faq = await Faqs.findOne({ faq_id });
 
-        await Faqs.findByIdAndUpdate({ faq_id }, { $set: { title: title, paragraph: paragraph } }, { new: true });
+        if (!faq) {
+            return res.status(404).json({ msg: "Faq not found" });
+        };
+
+        faq.title = title;
+        faq.paragraph = paragraph;
+
+        await faq.save();
 
         return res.status(200).json({ msg: "Faq Updated successfuly", status: true })
 

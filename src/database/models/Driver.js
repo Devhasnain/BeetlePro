@@ -26,7 +26,8 @@ const DriverSchema = new mongoose.Schema({
     reviews: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Review',
-    }]
+    }],
+    image: { type: String },
 },
     {
         timestamps: true

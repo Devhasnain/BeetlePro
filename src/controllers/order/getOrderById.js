@@ -1,28 +1,19 @@
-import config from "../../../config.js";
 import Orders from "../../database/models/Order.js";
-
-let  { HttpStatusCodes } = config;
+import handleError from "../../utils/ReturnError.js";
 
 const getOrderById = async (req, res) => {
     try {
 
         const { id } = req.params;
-        const user = req.user;
-
-        if (!id) {
-            return res.status(400).json({ msg: "Bad request" });
-        }
-
         let order = await Orders.findOne({ _id: id });
-
         if (!order) {
-            return res.status(404).json({ msg: "Order not found" });
+            return res.status(404).json({ msg: "Order not found", status: false });
         }
-
-        return res.status(200).json(order);
+        return res.status(200).json({ order, status: true });
 
     } catch (error) {
-        return res.status(error?.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "Internal Server Error" });
+        let response = handleError(error);
+        return res.status(response.statusCode).json({ msg: response.body, status: false });
     }
 };
 

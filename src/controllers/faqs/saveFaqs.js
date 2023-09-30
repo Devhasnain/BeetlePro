@@ -15,9 +15,9 @@ const saveFaqs = async (req, res) => {
             return res.status(400).json({ msg: "Bad request", status: false })
         }
 
-        let faq_id = uuidv4();
 
         await faqs.forEach(async (element) => {
+            let faq_id = uuidv4();
             let createFaq = await Faqs.create({ ...element, faq_id });
             await createFaq.save();
         });
