@@ -17,6 +17,7 @@ import ReviewRoute from './routes/review.js';
 import FaqsRoute from './routes/faq.js';
 import morgan from 'morgan';
 import * as middleware from './utils/loggerMiddleware.js';
+import ImageRoute from './routes/image.js';
 
 const app = express();
 
@@ -41,6 +42,7 @@ DBconnection();
 app.use('/auth', AuthRoute);
 app.use('/order', OrderRoute);
 app.use('/review', ReviewRoute);
+app.use('/image', ImageRoute);
 app.use('/faqs', FaqsRoute);
 
 app.get('/data', async (req, res) => {

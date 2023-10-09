@@ -1,14 +1,10 @@
 import express from 'express';
 import withMethodGuard from '../middlewares/withMethodGuard.js';
 import { uploadDriverFiles, uploadMultipleFiles, upload } from '../controllers/uploads/Upload.js';
-
-// customers 
 import useCheckCustomerEmail from '../middlewares/customers/useCheckExistingEmail.js';
 import VerifyCustomerToken from '../middlewares/customers/verifyToken.js';
 import CustomerSignIn from '../controllers/auth/customers/sign_in.js';
 import CustomerSignUp from '../controllers/auth/customers/sign_up.js';
-
-// drivers 
 import apiGuardDrivers from '../middlewares/drivers/apiGuard.js';
 import useCheckDriverEmail from '../middlewares/drivers/useCheckExistingEmail.js';
 import VerifyDriverToken from '../middlewares/drivers/verifyToken.js';
