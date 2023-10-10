@@ -3,26 +3,10 @@ import Users from '../../database/models/User.js';
 import Drivers from '../../database/models/Driver.js';
 import config from '../../../config.js';
 
-let { roles } = config;
-
-const requestBodyValidation = zod.object({
-    name: zod.string().min(3),
-    email: zod.string().email().min(13),
-    user_phone: zod.string().min(11),
-    password: zod.string().min(8),
-    role_type: zod.number(),
-})
-
 const useCheckExistingEmail = async (req, res, next) => {
     try {
 
-        const requestBody = await requestBodyValidation.safeParseAsync(req.body);
-
-        if (!requestBody.success) {
-            return res.status(401).json({ msg: `${requestBody.error.name}, data validation faild!`, status: false })
-        }
-
-        const { email, role_type } = requestBody.data;
+        const { email, role_type } = req.body;
 
         let checkIfEmailinDrivers = await Drivers.findOne({ email });
         let checkIfEmailinCutomers = await Users.findOne({ email });

@@ -31,7 +31,8 @@ const OrdersSchema = new mongoose.Schema({
     },
     driver_order_status: { type: String },
     order_status: { type: String },
-    order_id: { type: String }
+    order_id: { type: String },
+    scheduled_time: { type: Number }
 },
     {
         timestamps: true

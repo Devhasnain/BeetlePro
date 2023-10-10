@@ -1,4 +1,3 @@
-import zod from 'zod';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import _ from 'lodash';
@@ -7,22 +6,9 @@ import handleError from '../../../utils/ReturnError.js';
 
 const extractFields = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'user_image'];
 
-
-const requestBodyValidation = zod.object({
-    email: zod.string().email().min(13),
-    password: zod.string().min(8),
-})
-
 const SignIn = async (req, res) => {
     try {
-
-        const requestBody = await requestBodyValidation.safeParseAsync(req.body);
-
-        if (!requestBody.success) {
-            return res.status(401).json({ msg: requestBody.error, status: false })
-        }
-
-        const { email, password } = requestBody.data;
+        const { email, password } = req.body;
 
         let user = await Users.findOne({ email });
 

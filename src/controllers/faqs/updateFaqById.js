@@ -9,7 +9,7 @@ const getFaqById = async (req, res) => {
         let faq = await Faqs.findOne({ faq_id });
 
         if (!faq) {
-            return res.status(404).json({ msg: "Faq not found" });
+            return res.status(404).json({ msg: "Faq not found", status: false });
         };
 
         faq.title = title;

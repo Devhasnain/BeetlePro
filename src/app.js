@@ -18,6 +18,7 @@ import FaqsRoute from './routes/faq.js';
 import morgan from 'morgan';
 import * as middleware from './utils/loggerMiddleware.js';
 import ImageRoute from './routes/image.js';
+import { scheduleOrderJob } from './utils/scheduleOrder.js';
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.get('/data', async (req, res) => {
 })
 
 app.get('/', (req, res) => {
+    scheduleOrderJob();
     return res.status(200).json({ msg: "hellow" })
 });
 

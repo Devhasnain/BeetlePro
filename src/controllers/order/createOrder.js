@@ -2,8 +2,9 @@ import config from "../../../config.js";
 import Drivers from "../../database/models/Driver.js";
 import Orders from "../../database/models/Order.js";
 import { v4 as uuidv4 } from 'uuid';
+import handleError from "../../utils/ReturnError.js";
 
-let { HttpStatusCodes, order, sender_order_status } = config;
+let { order } = config;
 
 const CreateOrder = async (req, res) => {
     try {
@@ -20,13 +21,14 @@ const CreateOrder = async (req, res) => {
             order_id,
             driver_id: driver._id,
             sender_id: user._id,
-            sender_order_status: sender_order_status.active,
+            sender_order_status: order.accept,
             order_status: order.pending
         });
         await createOrder.save();
         return res.status(200).json({ msg: "Order Create Successfuly", status: true });
     } catch (error) {
-        return res.status(error?.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "Internal Server Error", status: false });
+        let response = handleError(error)
+        return res.status(response.statusCode).json({ msg: response.body, status: false });
     }
 };
 

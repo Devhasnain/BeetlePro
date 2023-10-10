@@ -18,6 +18,7 @@ import getNewOrders from "../controllers/order/driver/getNewOrders.js";
 import pickedUpOrder from "../controllers/order/driver/pickedUpOrder.js";
 import getOrderStatus from "../controllers/order/customers/getOrderStatus.js";
 import getAllDrivers from "../controllers/order/getAllDrivers.js";
+import scheduleOrder from "../controllers/order/customers/scheduleOrder.js";
 
 let { SUPPORTEDGETMETHOD, SUPPORTEDMETHOD, driversCollection, usersCollection } = config;
 
@@ -29,6 +30,7 @@ router.get('/get/:id', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, ge
 router.get('/get-canceled-customer-orders', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getOrdersCanceled(usersCollection));  // get customer canceled orders
 router.get('/get-completed-customer-orders', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getOrdersCompleted(usersCollection)); // get customer completed orders
 router.post('/create', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, CreateOrder);  // create order
+router.post('/schedule-order', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, scheduleOrder);
 router.post('/cancel-user-order', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, customerCancelOrder);  // cancel order
 router.get('/get-order-status/:order_id', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getOrderStatus);   // get order status
 router.post('/complete-order-by-user', withMethodGuard(SUPPORTEDMETHOD), customerapiGuard, completeUserOrderById);  // complete order by user

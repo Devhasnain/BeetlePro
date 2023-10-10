@@ -1,4 +1,4 @@
-const config ={
+const config = {
     httpMethods: [
         'GET',
         'POST',
@@ -32,12 +32,13 @@ const config ={
     SUPPORTEDMETHOD: 'POST',
     SUPPORTEDGETMETHOD: "GET",
     order: {
-        completed:"completed",
+        schedule: 'scheduled',
+        completed: "completed",
         cancel: "canceled",
         pending: 'pending',
         accept: 'active',
         delivered: 'delivered',
-        picked_up:"picked_up"
+        picked_up: "picked_up"
     },
     driver_order_status: {
         active: 'active',
