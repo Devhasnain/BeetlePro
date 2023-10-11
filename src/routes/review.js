@@ -4,8 +4,7 @@ import createReview from '../controllers/review/customer/createReview.js';
 
 const router = express.Router();
 
-// customer 
-router.post('/customer-write-review', createReview);
+router.post('/customer-write-review', apiGuardCustomers ,createReview);
 
 
 export default router;

@@ -26,8 +26,9 @@ const apiGuard = async (req, res, next) => {
             destroyCookie(req, 'token');
             return res.status(401).json({ message: 'Token has expired', status: false });
         }
-
-        let user = await Users.findOne({ _id }).select('-password').lean().exec();
+        console.log(_id)
+        let user = await Users.findOne({ _id: _id }).select('-password').lean().exec();
+        console.log(user)
 
         if (!user) {
             return res.status(404).json({ msg: "user not found", status: false })

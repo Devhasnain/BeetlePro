@@ -2,6 +2,8 @@ const withMethodGuard = (allowedMethod) => {
     return (req, res, next) => {
         try {
 
+            console.log(req.body)
+
             let requestMethod = req.method;
 
             if (requestMethod === allowedMethod) {

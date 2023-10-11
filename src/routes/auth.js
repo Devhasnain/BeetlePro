@@ -35,9 +35,9 @@ router.post('/driver/user-forget-password-reset', withMethodGuard(SUPPORTEDMETHO
 router.post('/driver/update-password', withMethodGuard(SUPPORTEDMETHOD), apiGuardDrivers, updateCurrentPassword(driversCollection));
 
 // driver file uploads 
-router.post('/driver/onboarding/v1', withMethodGuard(SUPPORTEDMETHOD), apiGuard, uploadMultipleFiles, OnboardingV1);
-router.post('/driver/onboarding/v2', withMethodGuard(SUPPORTEDMETHOD), apiGuard, uploadDriverFiles, OnboardingV2);
-router.post('/driver/onboarding/v3', withMethodGuard(SUPPORTEDMETHOD), apiGuard, dynamicFieldName, OnboardingV3);
+router.post('/driver/onboarding/v1', withMethodGuard(SUPPORTEDMETHOD), apiGuardDrivers, uploadMultipleFiles, OnboardingV1);
+router.post('/driver/onboarding/v2', withMethodGuard(SUPPORTEDMETHOD), apiGuardDrivers, uploadDriverFiles, OnboardingV2);
+router.post('/driver/onboarding/v3', withMethodGuard(SUPPORTEDMETHOD), apiGuardDrivers, dynamicFieldName, OnboardingV3);
 
 // customer auth
 router.get('/customer/:user_id', getUserData(usersCollection));

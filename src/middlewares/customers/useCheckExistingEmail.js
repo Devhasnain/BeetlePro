@@ -1,7 +1,8 @@
-import zod from 'zod';
 import Users from '../../database/models/User.js';
 import Drivers from '../../database/models/Driver.js';
 import config from '../../../config.js';
+
+let { roles } = config;
 
 const useCheckExistingEmail = async (req, res, next) => {
     try {
