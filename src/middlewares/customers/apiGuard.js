@@ -1,9 +1,6 @@
-import config from '../../../config.js';
 import jwt from "jsonwebtoken";
 import Users from '../../database/models/User.js';
 import handleError from '../../utils/ReturnError.js';
-
-let { HttpStatusCodes, roles } = config;
 
 const apiGuard = async (req, res, next) => {
 
@@ -26,7 +23,6 @@ const apiGuard = async (req, res, next) => {
         next();
 
     } catch (error) {
-        console.log(error)
         let response = handleError(error);
         return res.status(response.statusCode).json({ msg: response.body, status: false })
     }
