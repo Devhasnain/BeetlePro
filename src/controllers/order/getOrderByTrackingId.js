@@ -22,7 +22,19 @@ const getOrderByTrackingId = async (req, res) => {
 
         let driver = await Drivers.findOne({ _id: order?.driver_id }).select("-password");
 
-        return res.status(200).json({ order, driver, status: true })
+        return res.status(200).json({
+            order: {
+                itemtype: order.itemtype,
+                order_id: order.order_id,
+                deliverytype: order.deliverytype
+            }, driver: {
+                image: driver?.image ?? "",
+                email: driver.email,
+                name: driver.name,
+                user_id: driver.user_id,
+                user_phone: driver.user_phone
+            }, status: true
+        })
 
     } catch (error) {
         let response = handleError(error);
