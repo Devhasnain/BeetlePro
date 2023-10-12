@@ -3,24 +3,18 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import Drivers from '../../../database/models/Driver.js';
+import handleError from '../../../utils/ReturnError.js';
 
 const extractField = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'user_image'];
-
-const requestBodyValidation = zod.object({
-    email: zod.string().email().min(13),
-    password: zod.string().min(8),
-})
 
 const SignIn = async (req, res) => {
     try {
 
-        const requestBody = await requestBodyValidation.safeParseAsync(req.body);
+        const { email, password } = req.body;
 
-        if (!requestBody.success) {
-            return res.status(401).json({ msg: requestBody.error, status: false })
+        if (!email || !password) {
+            return res.status(400).json({ msg: "Bad request! Provide login credentails to login", status: false })
         }
-
-        const { email, password } = requestBody.data;
 
         let user = await Drivers.findOne({ email });
 
@@ -41,7 +35,8 @@ const SignIn = async (req, res) => {
         return res.status(200).json({ ...userdata, token, status: true })
 
     } catch (error) {
-        return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? 'Internal Server Error', status: false })
+        let resposne = handleError(error);
+        return res.status(resposne.statusCode).json({ msg: resposne.body, status: false })
     }
 };
 

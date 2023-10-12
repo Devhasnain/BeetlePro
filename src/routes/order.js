@@ -21,6 +21,7 @@ import getAllDrivers from "../controllers/order/getAllDrivers.js";
 import scheduleOrder from "../controllers/order/customers/scheduleOrder.js";
 import getDriverPendingOrders from "../controllers/order/driver/getPendingOrders.js";
 import getCustomerPendingOrders from "../controllers/order/driver/getPendingOrders.js";
+import getOrderByTrackingId from "../controllers/order/getOrderByTrackingId.js";
 
 
 let { SUPPORTEDGETMETHOD, SUPPORTEDMETHOD, driversCollection, usersCollection } = config;
@@ -48,5 +49,6 @@ router.get('/get-completed-driver-orders', withMethodGuard(SUPPORTEDGETMETHOD), 
 router.get('/get-canceled-driver-orders', withMethodGuard(SUPPORTEDGETMETHOD), driverApiGuard, getOrdersCanceled(driversCollection)); // canceled driver orders
 router.get('/get-driver-pending-orders', withMethodGuard(SUPPORTEDGETMETHOD), driverApiGuard, getDriverPendingOrders);
 router.get('/get-customer-pending-orders', withMethodGuard(SUPPORTEDGETMETHOD), customerapiGuard, getCustomerPendingOrders);
+router.get('/get-order-by-tracking-id', customerapiGuard, getOrderByTrackingId);
 
 export default router;

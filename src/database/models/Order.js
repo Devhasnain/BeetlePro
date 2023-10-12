@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const OrdersSchema = new mongoose.Schema({
+    tracking_id: { type: String },
     itemcount: { type: String },
     sender_id: {
         type: mongoose.Schema.Types.ObjectId,

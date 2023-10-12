@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import { destroyCookie } from 'nookies';
 import _ from 'lodash';
 import Drivers from '../../database/models/Driver.js';
 

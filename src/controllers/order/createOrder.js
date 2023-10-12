@@ -16,13 +16,15 @@ const CreateOrder = async (req, res) => {
             return res.status(404).json({ msg: `Driver not found with this id:${data.driver_id}` });
         }
         let order_id = uuidv4();
+        let tracking_id = uuidv4();
         let createOrder = await Orders.create({
             ...data,
             order_id,
             driver_id: driver._id,
             sender_id: user._id,
             sender_order_status: order.accept,
-            order_status: order.pending
+            order_status: order.pending,
+            tracking_id
         });
         await createOrder.save();
         return res.status(200).json({ msg: "Order Create Successfuly", status: true });

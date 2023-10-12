@@ -13,9 +13,6 @@ import FaqsRoute from './routes/faq.js';
 import morgan from 'morgan';
 import * as middleware from './utils/loggerMiddleware.js';
 import ImageRoute from './routes/image.js';
-import { scheduleOrderJob } from './utils/scheduleOrder.js';
-import handleResponse from './utils/ReturnResponse.js';
-import handleError from './utils/ReturnError.js';
 
 const app = express();
 
