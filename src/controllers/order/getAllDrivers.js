@@ -6,6 +6,7 @@ const getAllDrivers = async (req, res) => {
         let drivers = await Drivers.find({});
         return res.status(200).json({ drivers, status: true });
     } catch (error) {
+        console.log(error)
         const response = handleError(error)
         return res.status(response.statusCode).json({ msg: response.body, status: false });
     }
