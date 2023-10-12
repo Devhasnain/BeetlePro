@@ -35,7 +35,7 @@ const SignUp = async (req, res) => {
 
         let user = _.pick(savedUser, extractField);
 
-        let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '5h' });
+        let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET);
 
         return res.status(200).json(
             {

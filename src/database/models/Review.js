@@ -1,17 +1,26 @@
 import mongoose from "mongoose";
 const ReviewsSchema = new mongoose.Schema({
     userRef: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        name: { type: String },
+        email: { type: String },
+        image: { type: String }
     },
-    order_id: {
+    orderRef: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Order',
-        required: true
     },
-    driver_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Driver"
+    driverRef: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Driver"
+        },
+        name: { type: String },
+        email: { type: String },
+        image: { type: String }
     },
     rating: { type: Number },
     text: { type: String },

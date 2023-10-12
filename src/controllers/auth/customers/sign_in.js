@@ -22,7 +22,7 @@ const SignIn = async (req, res) => {
             return res.status(400).json({ msg: "Password not matched!", status: false });
         }
 
-        let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET);
 
         let userdata = _.pick(user, extractFields);
 

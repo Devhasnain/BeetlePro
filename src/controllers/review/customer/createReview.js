@@ -2,7 +2,7 @@ import Orders from "../../../database/models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
 import config from '../../../../config.js';
 import Reviews from "../../../database/models/Review.js";
-// import Drivers from "../../../database/models/Driver.js";
+import Drivers from "../../../database/models/Driver.js";
 // import calculateTotalRating from "../../../utils/getTotalRating.js";
 
 
@@ -15,9 +15,16 @@ const createReview = async (req, res) => {
 
         let order = await Orders.findOne({ order_id });
 
+
         if (!order) {
             return res.status(404).json({ msg: "Order not found!" });
         };
+
+        let driver = await Drivers.findOne({ _id: order.driver_id });
+
+        if (!driver) {
+            return res.status(404).json({ msg: "Driver not found!" });
+        }
 
         let findReviewIfExists = await Reviews.findOne({ userRef: user._id, order_id: order._id });
 
@@ -29,7 +36,14 @@ const createReview = async (req, res) => {
             return res.status(400).json({ msg: "Order hasn't yet been completed", status: false })
         }
 
-        let review = await Reviews.create({ userRef: user._id, order_id: order._id, driver_id: order.driver_id, text, rating });
+        let review = await Reviews.create(
+            {
+                userRef: { id: user._id, ...user },
+                orderRef: order._id,
+                driverRef: { id: driver._id, ...driver },
+                text,
+                rating
+            });
         await review.save();
 
         return res.status(200).json({ msg: "Review added successfuly" })
