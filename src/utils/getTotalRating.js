@@ -1,13 +1,13 @@
-function calculateTotalRating(orders) {
+function calculateTotalRating(reviews) {
     // Initialize variables to store the sum of ratings and the total number of ratings
     let totalRating = 0;
     let totalRatingsCount = 0;
 
     // Iterate through the array of orders
-    for (const order of orders) {
-        if (order.rating !== undefined && !isNaN(order.rating)) {
+    for (const review of reviews) {
+        if (review.rating !== undefined && !isNaN(review.rating)) {
             // Check if the 'rating' property exists and is a valid number
-            totalRating += order.rating;
+            totalRating += review.rating;
             totalRatingsCount++;
         }
     }

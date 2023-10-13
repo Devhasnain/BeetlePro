@@ -4,14 +4,14 @@ import driverCancelOrder from '../controllers/order/driver/cancelOrder.js';
 import customerapiGuard from "../middlewares/customers/apiGuard.js";
 import customerCancelOrder from '../controllers/order/customers/cancelOrder.js';
 import completeUserOrderById from "../controllers/order/customers/completeOrder.js";
-import CreateOrder from "../controllers/order/createOrder.js";
+import CreateOrder from "../controllers/order/customers/createOrder.js";
 import getOrderById from "../controllers/order/getOrderById.js";
 import getUserOrders from "../controllers/order/getUserOrders.js";
 import acceptOrderById from "../controllers/order/driver/acceptOrderById.js";
 import completeOrderById from "../controllers/order/driver/completeOrderById.js";
-import getOrdersInProgress from "../controllers/order/getOrdersInProgress.js";
+import getOrdersInProgress from "../controllers/order/customers/getOrdersInProgress.js";
 import getOrdersCanceled from "../controllers/order/getOrdersCanceled.js";
-import getOrdersCompleted from "../controllers/order/getOrdersCompleteted.js";
+import getOrdersCompleted from "../controllers/order/customers/getOrdersCompleteted.js";
 import getNewOrders from "../controllers/order/driver/getNewOrders.js";
 import pickedUpOrder from "../controllers/order/driver/pickedUpOrder.js";
 import getOrderStatus from "../controllers/order/customers/getOrderStatus.js";
@@ -19,7 +19,8 @@ import getAllDrivers from "../controllers/order/getAllDrivers.js";
 import scheduleOrder from "../controllers/order/customers/scheduleOrder.js";
 import getDriverPendingOrders from "../controllers/order/driver/getPendingOrders.js";
 import getCustomerPendingOrders from "../controllers/order/driver/getPendingOrders.js";
-import getOrderByTrackingId from "../controllers/order/getOrderByTrackingId.js";
+import getOrderByTrackingId from "../controllers/order/customers/getOrderByTrackingId.js";
+import getDriverInfo from "../controllers/order/driver/getDriverInfo.js";
 
 const router = express.Router();
 
@@ -42,5 +43,6 @@ router.post('/cancel-driver-order', driverApiGuard, driverCancelOrder); // cance
 router.get('/get-driver-pending-orders', driverApiGuard, getDriverPendingOrders);
 router.get('/get-customer-pending-orders', customerapiGuard, getCustomerPendingOrders);
 router.get('/get-order-by-tracking-id/:tracking_id', customerapiGuard, getOrderByTrackingId);
+router.get('/get-driver-info/:id',getDriverInfo);  //done
 
 export default router;

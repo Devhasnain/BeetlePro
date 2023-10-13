@@ -1,11 +1,9 @@
 import config from "../../../../config.js";
-import Orders from "../../../database/models/Order.js";
+import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
 
 
-let { order } = config;
-
-const { pending, accept } = order;
+let { order_status } = config;
 
 const acceptOrderById = async (req, res) => {
     try {
@@ -16,18 +14,16 @@ const acceptOrderById = async (req, res) => {
         if (!order) {
             return res.status(400).json({ status: false, msg: `Order not found with this id:${order_id}, for driver:${user.user_id}` });
         };
-        if (order.order_status !== pending) {
-            return res.status(400).json({ status: false, msg: `Ony order's can be accepted when your customer initially creates and order!` });
+        if (order.order_status !== order_status.pending) {
+            return res.status(400).json({ status: false, msg: `Only order's can be accepted when your customer initially creates an order!` });
         }
-        order.order_status = accept;
-        order.driver_order_status = accept;
+        order.order_status = order_status.active;
         await order.save();
 
         return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!`, status: true });
 
     } catch (error) {
         let response = handleError(error);
-        console.log(error)
         return res.status(response.statusCode).json({ msg: response.body, status: false })
     }
 };

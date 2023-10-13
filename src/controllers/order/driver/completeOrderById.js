@@ -1,8 +1,8 @@
 import config from "../../../../config.js";
-import Orders from "../../../database/models/Order.js";
+import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
 
-let { order } = config;
+let { order, order_status } = config;
 
 const { delivered, picked_up } = order;
 
@@ -20,15 +20,14 @@ const completeOrderById = async (req, res) => {
         if (!order) {
             return res.status(404).json({ msg: `Order not found with this id:${order_id}, for driver:${user.user_id}`, status: false });
         };
-        if (order.order_status === delivered) {
+        if (order.order_status === order_status.delivered) {
             return res.status(400).json({ msg: `Order has already been delivered!`, status: false });
         }
-        if (order.order_status !== picked_up) {
+        if (order.order_status !== order_status.picked_up) {
             return res.status(400).json({ msg: `Can't deliver an order before pickup!`, status: false });
         }
 
-        order.driver_order_status = delivered;
-        order.order_status = delivered;
+        order.order_status = order_status.delivered;
         await order.save();
 
         return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!`, status: true });

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
-import Drivers from '../../database/models/Driver.js';
+import Drivers from '../../models/Driver.js';
 import handleError from '../../utils/ReturnError.js';
 
 const VerifyToken = async (req, res, next) => {

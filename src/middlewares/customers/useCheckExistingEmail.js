@@ -1,5 +1,5 @@
-import Users from '../../database/models/User.js';
-import Drivers from '../../database/models/Driver.js';
+import Users from '../../models/User.js';
+import Drivers from '../../models/Driver.js';
 import config from '../../../config.js';
 
 let { roles } = config;

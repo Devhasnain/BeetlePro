@@ -1,10 +1,10 @@
-import config from "../../../config.js";
-import Drivers from "../../database/models/Driver.js";
-import Orders from "../../database/models/Order.js";
-import handleError from "../../utils/ReturnError.js";
-import generateId from '../../utils/generateRandomId.js'
+import config from "../../../../config.js";
+import Drivers from "../../../models/Driver.js";
+import Orders from "../../../models/Order.js";
+import handleError from "../../../utils/ReturnError.js";
+import generateId from '../../../utils/generateRandomId.js'
 
-let { order } = config;
+let { order, order_status } = config;
 
 const CreateOrder = async (req, res) => {
     try {
@@ -22,8 +22,7 @@ const CreateOrder = async (req, res) => {
             order_id,
             driver_id: driver._id,
             sender_id: user._id,
-            sender_order_status: order.accept,
-            order_status: order.pending,
+            order_status: order_status.pending,
             tracking_id
         });
         await createOrder.save();

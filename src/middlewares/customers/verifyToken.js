@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
-import Users from '../../database/models/User.js';
+import Users from '../../models/User.js';
 import handleError from '../../utils/ReturnError.js';
 
 const VerifyToken = async (req, res, next) => {

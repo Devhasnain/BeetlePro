@@ -1,4 +1,4 @@
-import Faqs from "../../database/models/Faqs.js";
+import Faqs from "../../models/Faqs.js";
 import handleError from "../../utils/ReturnError.js"
 
 const getFaqById = async (req, res) => {

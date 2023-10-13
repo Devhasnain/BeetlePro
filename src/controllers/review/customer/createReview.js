@@ -1,10 +1,9 @@
-import Orders from "../../../database/models/Order.js";
+import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
 import config from '../../../../config.js';
-import Reviews from "../../../database/models/Review.js";
-import Drivers from "../../../database/models/Driver.js";
-// import calculateTotalRating from "../../../utils/getTotalRating.js";
-
+import Reviews from "../../../models/Review.js";
+import Drivers from "../../../models/Driver.js";
+import calculateTotalRating from "../../../utils/getTotalRating.js";
 
 const createReview = async (req, res) => {
 
@@ -15,38 +14,61 @@ const createReview = async (req, res) => {
 
         let order = await Orders.findOne({ order_id });
 
-
         if (!order) {
             return res.status(404).json({ msg: "Order not found!" });
         };
 
-        let driver = await Drivers.findOne({ _id: order.driver_id });
-
-        if (!driver) {
-            return res.status(404).json({ msg: "Driver not found!" });
-        }
-
-        let findReviewIfExists = await Reviews.findOne({ userRef: user._id, order_id: order._id });
-
-        if (findReviewIfExists) {
-            return res.status(400).json({ msg: "You already have added review to this order!", status: false });
-        };
-
-        if (order.order_status !== config.order.completed) {
+        if (order.order_status !== config.order_status.completed) {
             return res.status(400).json({ msg: "Order hasn't yet been completed", status: false })
         }
 
+        if (order?.reviewed && order?.review_id) {
+            return res.status(400).json({ msg: "Order has already been reviewd", status: false })
+        }
+
+        let driver = await Drivers.findOne({ _id: order.driver_id });
+
         let review = await Reviews.create(
             {
-                userRef: { id: user._id, ...user },
+                userRef: {
+                    id: user._id,
+                    name: user?.name,
+                    email: user?.email,
+                    image: user?.image,
+                    user_phone: user?.user_phone
+                },
                 orderRef: order._id,
-                driverRef: { id: driver._id, ...driver },
+                driverRef: {
+                    id: driver._id,
+                    name: driver?.name,
+                    email: driver?.email,
+                    image: driver?.image,
+                    user_phone: driver?.user_phone
+                },
                 text,
                 rating
             });
+
         await review.save();
 
-        return res.status(200).json({ msg: "Review added successfuly" })
+        order.reviewed = true;
+        order.review_id = review._id;
+        await order.save();
+
+        let reviewData = {
+            id: review._id,
+            rating,
+            text
+        }
+
+        driver.reviews = [...driver.reviews, reviewData];
+        let total_ratings = calculateTotalRating(driver.reviews);
+
+        driver.total_ratings = total_ratings;
+
+        await driver.save();
+
+        return res.status(200).json({ msg: "Review added successfuly", status: true })
 
     } catch (error) {
         const response = handleError(error);

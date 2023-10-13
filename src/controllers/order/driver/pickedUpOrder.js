@@ -1,8 +1,8 @@
-import Orders from "../../../database/models/Order.js";
+import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js"
 import config from "../../../../config.js";
 
-const { order } = config;
+const { order, order_status } = config;
 
 const pickedUpOrder = async (req, res) => {
     try {
@@ -17,11 +17,11 @@ const pickedUpOrder = async (req, res) => {
             return res.status(404).json({ msg: "Order not found", status: false });
         };
 
-        if (getorder.order_status !== order.accept) {
+        if (getorder.order_status !== order_status.active) {
             return res.status(400).json({ msg: "Bad request", status: false });
         }
 
-        getorder.order_status = order.picked_up;
+        getorder.order_status = order_status.picked_up;
         await getorder.save();
 
         return res.status(200).json({ msg: "Order Picked up successfuly", status: true })

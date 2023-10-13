@@ -1,8 +1,8 @@
-import Files from "../../../database/models/File.js";
+import Files from "../../../models/File.js";
 import handleError from "../../../utils/ReturnError.js";
 import config from '../../../../config.js';
-import Users from "../../../database/models/User.js";
-import Drivers from "../../../database/models/Driver.js";
+import Users from "../../../models/User.js";
+import Drivers from "../../../models/Driver.js";
 
 let { imageURL } = config;
 

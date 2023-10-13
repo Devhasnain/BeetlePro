@@ -7,7 +7,8 @@ const ReviewsSchema = new mongoose.Schema({
         },
         name: { type: String },
         email: { type: String },
-        image: { type: String }
+        image: { type: String },
+        user_phone: { type: String }
     },
     orderRef: {
         type: mongoose.Schema.Types.ObjectId,
@@ -16,11 +17,12 @@ const ReviewsSchema = new mongoose.Schema({
     driverRef: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Driver"
+            ref: 'Driver'
         },
         name: { type: String },
         email: { type: String },
-        image: { type: String }
+        image: { type: String },
+        user_phone: { type: String }
     },
     rating: { type: Number },
     text: { type: String },

@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import _ from 'lodash';
-import Users from '../../../database/models/User.js';
+import Users from '../../../models/User.js';
 import handleError from '../../../utils/ReturnError.js';
 
 const extractFields = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'user_image'];

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import _ from "lodash";
-import Users from '../../../database/models/User.js';
+import Users from '../../../models/User.js';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 import handleError from '../../../utils/ReturnError.js';

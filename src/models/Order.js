@@ -15,6 +15,7 @@ const OrdersSchema = new mongoose.Schema({
     sender_address: { type: String },
     sender_name: { type: String },
     sender_phonenumber: { type: String },
+    sender_description:{type:String},
     receivercity: { type: String },
     recieverpostalcode: { type: String },
     recieverhouseno: { type: String },
@@ -25,25 +26,24 @@ const OrdersSchema = new mongoose.Schema({
     itemtype: { type: String },
     deliverytype: { type: String },
     weight: { type: String },
-    order_pickup_lat: { type: String },
-    order_pickup_lng: { type: String },
+    pickup_location:{type:String},
     dropofflocation: { type: String },
     dropofflat: { type: String },
     dropofflng: { type: String },
     order_type_categories: { type: String },
-    sender_order_status: { type: String },
     sender_order_cancellation_reason: { type: String },
     driver_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Driver',
     },
     driver_quotation: { type: String },
-    driver_order_status: { type: String },
     order_status: { type: String },
     order_id: { type: String },
     order_subtotal_price: { type: Number },
     order_shipping_assurance: { type: String },
-    scheduled_time: { type: Number }
+    scheduled_time: { type: Number },
+    reviewed: { type: Boolean },
+    review_id: { type: mongoose.Types.ObjectId, ref: "Review" }
 },
     {
         timestamps: true

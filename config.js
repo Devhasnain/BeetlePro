@@ -40,6 +40,13 @@ const config = {
         delivered: 'delivered',
         picked_up: "picked_up"
     },
+    order_status: {
+        pending: "0",
+        active: "1",
+        picked_up: "2",
+        delivered: "3",
+        completed: "4"
+    },
     driver_order_status: {
         active: 'active',
         canceled: 'canceled'
@@ -48,7 +55,7 @@ const config = {
         active: 'active',
         canceled: 'canceled'
     },
-    imageURL: "http://localhost:3001/image",
+    imageURL: "https://phpstack-1080450-3915725.cloudwaysapps.com/image",
     port: 3000
 };
 

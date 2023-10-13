@@ -1,10 +1,9 @@
 import config from "../../../../config.js";
-import Orders from "../../../database/models/Order.js";
+import Drivers from "../../../models/Driver.js";
+import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
 
-let { order } = config;
-
-const { delivered, completed } = order;
+let { order_status } = config;
 
 const completeOrderById = async (req, res) => {
     try {
@@ -23,18 +22,22 @@ const completeOrderById = async (req, res) => {
             return res.status(404).json({ msg: `Order not found with this id:${order_id}, for driver:${user.user_id}`, status: false });
         };
 
-        if (order.order_status !== delivered && order.driver_order_status !== delivered) {
+        if (order.order_status !== order_status.delivered) {
             return res.status(400).json({ msg: `Order hasn't been delivered yet by the rider!`, status: false });
         }
 
-        order.order_status = completed;
-        order.driver_order_status = completed;
+        order.order_status = order_status.completed;
 
         await order.save();
 
-        return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!`, status: true });
+        let driver = await Drivers.findOne({ _id: order.driver_id });
+        driver.completed_orders = driver.completed_orders ? driver.completed_orders + 1 : 1;
+        await driver.save();
+
+        return res.status(200).json({ msg: `Order has been accepted`, status: true });
 
     } catch (error) {
+        console.log(error)
         let response = handleError(error);
         return res.status(response.statusCode).json({ msg: response.body, status: false })
     }

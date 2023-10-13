@@ -1,9 +1,8 @@
-import Drivers from "../../../database/models/Driver.js";
-import Orders from "../../../database/models/Order.js";
+import Drivers from "../../../models/Driver.js";
+import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
 import { v4 as uuidv4 } from 'uuid';
 import config from '../../../../config.js';
-import { scheduleOrderJob } from "../../../utils/scheduleOrder.js";
 
 const { order } = config;
 
@@ -25,7 +24,6 @@ const scheduleOrder = async (req, res) => {
             scheduled_time: scheduled_time
         })
         await createOrder.save(createOrder);
-        scheduleOrderJob(createOrder);
         return res.status(200).json({ msg: "Order Create Successfuly", status: true });
     } catch (error) {
         console.log(error)

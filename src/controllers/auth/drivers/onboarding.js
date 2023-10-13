@@ -1,5 +1,5 @@
-import Drivers from "../../../database/models/Driver.js";
-import Files from "../../../database/models/File.js";
+import Drivers from "../../../models/Driver.js";
+import Files from "../../../models/File.js";
 import handleError from "../../../utils/ReturnError.js";
 import { upload } from '../../uploads/Upload.js';
 import config from '../../../../config.js';

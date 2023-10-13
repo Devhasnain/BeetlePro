@@ -2,7 +2,7 @@ import zod from 'zod';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
-import Drivers from '../../../database/models/Driver.js';
+import Drivers from '../../../models/Driver.js';
 import handleError from '../../../utils/ReturnError.js';
 
 const extractField = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'user_image'];

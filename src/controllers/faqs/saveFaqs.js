@@ -1,4 +1,4 @@
-import Faqs from "../../database/models/Faqs.js";
+import Faqs from "../../models/Faqs.js";
 import handleError from "../../utils/ReturnError.js";
 import { v4 as uuidv4 } from "uuid";
 

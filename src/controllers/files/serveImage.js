@@ -1,4 +1,4 @@
-import Files from "../../database/models/File.js";
+import Files from "../../models/File.js";
 import handleError from "../../utils/ReturnError.js"
 
 const serveImage = async (req, res) => {

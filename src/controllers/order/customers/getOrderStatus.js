@@ -1,4 +1,4 @@
-import Orders from "../../../database/models/Order.js";
+import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
 
 const getOrderStatus = async (req, res) => {

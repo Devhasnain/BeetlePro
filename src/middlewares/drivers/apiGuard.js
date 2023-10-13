@@ -1,6 +1,6 @@
 import config from '../../../config.js';
 import jwt from "jsonwebtoken";
-import Drivers from '../../database/models/Driver.js';
+import Drivers from '../../models/Driver.js';
 
 const { HttpStatusCodes } = config;
 const apiGuard = async (req, res, next) => {

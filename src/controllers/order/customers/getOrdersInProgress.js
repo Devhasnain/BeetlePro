@@ -1,16 +1,25 @@
-import Orders from "../../database/models/Order.js";
-import handleError from "../../utils/ReturnError.js";
-import config from '../../../config.js';
-
+import Orders from "../../../models/Order.js";
+import handleError from "../../../utils/ReturnError.js";
+import config from '../../../../config.js';
+import _ from 'lodash';
 let { order } = config;
 
-const getOrdersCompleted = async (req, res) => {
+const getOrdersInProgress = async (req, res) => {
     try {
+
         let user = req.user;
+
         let orders = await Orders.find({ sender_id: user._id });
-        let filter_orders = orders.map((item) => {
-            if (item.order_status === order.completed) {
-                let data = _.pick(item, [
+
+        if (orders.length < 1) {
+            return res.status(200).json({ orders: [], status: true })
+        }
+
+        let filter_orders = [];
+
+        for (let i = 0; i < orders?.length; i++) {
+            if (orders[i].order_status !== order.completed) {
+                let data = _.pick(orders[i], [
                     "tracking_id",
                     "order_id",
                     "itemtype",
@@ -20,11 +29,9 @@ const getOrdersCompleted = async (req, res) => {
                     "order_subtotal_price",
                     "dropofflocation"
                 ])
-                return {
-                    ...data
-                }
+                filter_orders.push(data);
             }
-        });
+        }
 
         return res.status(200).json({ orders: filter_orders, status: true });
 
@@ -34,4 +41,4 @@ const getOrdersCompleted = async (req, res) => {
     }
 };
 
-export default getOrdersCompleted;
+export default getOrdersInProgress;

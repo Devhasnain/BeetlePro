@@ -16,16 +16,24 @@ const DriverSchema = new mongoose.Schema({
     user_state: { type: String },
     user_country: { type: String },
     user_verification: { type: String },
+    user_address: { type: String },
     flags: { type: String },
     name: { type: String },
     email: { type: String, required: true, unique: true },
     role_type: { type: Number, required: true },
     user_id: { type: String },
     total_ratings: { type: Number },
-    reviews: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Review',
-    }],
+    member_since:{type:String},
+    reviews: [
+        {
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Review',
+            },
+            rating: { type: Number },
+            text: { type: String }
+        }],
+    completed_orders: { type: Number },
     image: { type: String },
 },
     {
