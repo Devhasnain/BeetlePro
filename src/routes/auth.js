@@ -1,5 +1,4 @@
 import express from 'express';
-import withMethodGuard from '../middlewares/withMethodGuard.js';
 import { uploadDriverFiles, uploadMultipleFiles, upload } from '../controllers/uploads/Upload.js';
 import useCheckCustomerEmail from '../middlewares/customers/useCheckExistingEmail.js';
 import VerifyCustomerToken from '../middlewares/customers/verifyToken.js';
@@ -21,30 +20,30 @@ import apiGuard from '../middlewares/customers/apiGuard.js';
 import getUserData from '../controllers/auth/getUserData.js';
 import updateUserProfile from '../controllers/auth/customers/updateProfile.js';
 
-let { usersCollection, driversCollection, SUPPORTEDMETHOD } = config;
+let { usersCollection, driversCollection } = config;
 
 const router = express.Router();
 
 
 // driver auth 
 router.get('/driver/:user_id', getUserData(driversCollection));
-router.post('/driver/sign_up', withMethodGuard(SUPPORTEDMETHOD), uploadMultipleFiles, useCheckDriverEmail, DriverSignUpOnboard);
-router.post('/driver/register', withMethodGuard(SUPPORTEDMETHOD), uploadMultipleFiles, useCheckDriverEmail, DriverSignUp);
-router.post('/driver/login', withMethodGuard(SUPPORTEDMETHOD), VerifyDriverToken, DriverSignIn);
-router.post('/driver/user-forget-password-reset', withMethodGuard(SUPPORTEDMETHOD), resetPassword(driversCollection));
-router.post('/driver/update-password', withMethodGuard(SUPPORTEDMETHOD), apiGuardDrivers, updateCurrentPassword(driversCollection));
+router.post('/driver/sign_up', uploadMultipleFiles, useCheckDriverEmail, DriverSignUpOnboard);
+router.post('/driver/register', uploadMultipleFiles, useCheckDriverEmail, DriverSignUp);
+router.post('/driver/login', VerifyDriverToken, DriverSignIn);
+router.post('/driver/user-forget-password-reset', resetPassword(driversCollection));
+router.post('/driver/update-password', apiGuardDrivers, updateCurrentPassword(driversCollection));
 
 // driver file uploads 
-router.post('/driver/onboarding/v1', withMethodGuard(SUPPORTEDMETHOD), apiGuardDrivers, uploadMultipleFiles, OnboardingV1);
-router.post('/driver/onboarding/v2', withMethodGuard(SUPPORTEDMETHOD), apiGuardDrivers, uploadDriverFiles, OnboardingV2);
-router.post('/driver/onboarding/v3', withMethodGuard(SUPPORTEDMETHOD), apiGuardDrivers, dynamicFieldName, OnboardingV3);
+router.post('/driver/onboarding/v1', apiGuardDrivers, uploadMultipleFiles, OnboardingV1);
+router.post('/driver/onboarding/v2', apiGuardDrivers, uploadDriverFiles, OnboardingV2);
+router.post('/driver/onboarding/v3', apiGuardDrivers, dynamicFieldName, OnboardingV3);
 
 // customer auth
 router.get('/customer/:user_id', getUserData(usersCollection));
-router.post('/customer/register', withMethodGuard(SUPPORTEDMETHOD), useCheckCustomerEmail, CustomerSignUp);
-router.post('/customer/login', withMethodGuard(SUPPORTEDMETHOD), VerifyCustomerToken, CustomerSignIn);
-router.post('/customer/update-profile', withMethodGuard(SUPPORTEDMETHOD), apiGuard, upload.single('image'), updateUserProfile);
-router.post('/customer/user-forget-password-reset', withMethodGuard(SUPPORTEDMETHOD), resetPassword(usersCollection));
-router.post('/customer/update-password', withMethodGuard(SUPPORTEDMETHOD), apiGuard, updateCurrentPassword(usersCollection));
+router.post('/customer/register', useCheckCustomerEmail, CustomerSignUp);
+router.post('/customer/login', VerifyCustomerToken, CustomerSignIn);
+router.post('/customer/update-profile', apiGuard, upload.single('image'), updateUserProfile);
+router.post('/customer/user-forget-password-reset', resetPassword(usersCollection));
+router.post('/customer/update-password', apiGuard, updateCurrentPassword(usersCollection));
 
 export default router;

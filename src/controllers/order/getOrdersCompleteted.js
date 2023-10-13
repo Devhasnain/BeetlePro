@@ -16,7 +16,9 @@ const getOrdersCompleted = async (req, res) => {
                     "itemtype",
                     "deliverytype",
                     "createdAt",
-                    "order_status"
+                    "order_status",
+                    "order_subtotal_price",
+                    "dropofflocation"
                 ])
                 return {
                     ...data

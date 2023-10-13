@@ -1,8 +1,8 @@
 import config from "../../../config.js";
 import Drivers from "../../database/models/Driver.js";
 import Orders from "../../database/models/Order.js";
-import { v4 as uuidv4 } from 'uuid';
 import handleError from "../../utils/ReturnError.js";
+import generateId from '../../utils/generateRandomId.js'
 
 let { order } = config;
 
@@ -15,8 +15,8 @@ const CreateOrder = async (req, res) => {
         if (!driver) {
             return res.status(404).json({ msg: `Driver not found with this id:${data.driver_id}` });
         }
-        let order_id = uuidv4();
-        let tracking_id = uuidv4();
+        let order_id = generateId();
+        let tracking_id = generateId();
         let createOrder = await Orders.create({
             ...data,
             order_id,

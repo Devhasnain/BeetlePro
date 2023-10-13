@@ -3,6 +3,7 @@ import _ from "lodash";
 import Users from '../../../database/models/User.js';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
+import handleError from '../../../utils/ReturnError.js';
 
 const extractField = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'user_image'];
 
@@ -36,7 +37,8 @@ const SignUp = async (req, res) => {
         return res.status(200).json({ user, token, status: true });
 
     } catch (error) {
-        return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? 'Internal Server Error', status: false })
+        let response = handleError(error);
+        return res.status(response.statusCode).json({ msg: response.body, status: false })
     }
 };
 

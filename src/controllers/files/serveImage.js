@@ -6,11 +6,13 @@ const serveImage = async (req, res) => {
         let { id } = req.params;
         let file = await Files.findOne({ _id: id });
 
+        console.log(file)
+
         res.setHeader('Content-Type', 'image/jpeg');
         res.send(file.buffer);
     } catch (error) {
         let response = handleError(error);
-        return res.status(response.statusCode).body({ msg: response.statusCode, status: false })
+        return res.status(response.statusCode).json({ msg: response.statusCode, status: false })
     }
 };
 

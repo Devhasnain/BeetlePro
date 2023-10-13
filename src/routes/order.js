@@ -41,6 +41,6 @@ router.post('/driver-order-complete-api', driverApiGuard, completeOrderById); //
 router.post('/cancel-driver-order', driverApiGuard, driverCancelOrder); // cancel order > driver
 router.get('/get-driver-pending-orders', driverApiGuard, getDriverPendingOrders);
 router.get('/get-customer-pending-orders', customerapiGuard, getCustomerPendingOrders);
-router.get('/get-order-by-tracking-id', customerapiGuard, getOrderByTrackingId);
+router.get('/get-order-by-tracking-id/:tracking_id', customerapiGuard, getOrderByTrackingId);
 
 export default router;

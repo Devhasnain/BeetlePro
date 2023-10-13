@@ -29,6 +29,7 @@ const SignIn = async (req, res) => {
         return res.status(200).json({ user: userdata, token, status: true });
 
     } catch (error) {
+        console.log(error)
         let response = handleError(error);
         return res.status(response.statusCode).json({ msg: response.body, status: false })
     }

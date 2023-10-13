@@ -13,7 +13,7 @@ import FaqsRoute from './routes/faq.js';
 import morgan from 'morgan';
 import * as middleware from './utils/loggerMiddleware.js';
 import ImageRoute from './routes/image.js';
-
+import bcrypt from 'bcrypt';
 const app = express();
 
 app.use(helmet());
@@ -25,20 +25,27 @@ function shouldCompress(req, res) {
         return false
     }
     return compression.filter(req, res)
-}
+};
 app.use(compression({ filter: shouldCompress }));
 app.use(morgan("tiny"));
 dotEnv.config();
-
 cacheMiddleware();
-
 DBconnection();
+
+
 
 app.use('/auth', AuthRoute);
 app.use('/order', OrderRoute);
 app.use('/review', ReviewRoute);
 app.use('/image', ImageRoute);
 app.use('/faqs', FaqsRoute);
+// let hash = async ()=>{
+//     let password = await bcrypt.hash("123123",12);
+//     console.log(password)
+// }
+
+// hash()
+
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
