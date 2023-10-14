@@ -6,7 +6,7 @@ const getUserOrders = async (req, res) => {
     try {
         let user = req.user;
         let sender_id = user._id;
-        let orders = await Orders.find({ sender_id }).select(['sender_name','order_status', 'order_id', 'createdAt', 'order_subtotal_price', 'driver_id', 'tracking_id', 'order_dropoff_location','order_pickup_day']).lean().exec();
+        let orders = await Orders.find({ sender_id }).select(['sender_name', 'order_status', 'order_id', 'createdAt', 'order_subtotal_price', 'driver_id', 'tracking_id', 'order_dropoff_location', 'order_pickup_day']).lean().exec();
 
         if (orders.length < 1) {
             return res.status(200).json({ orders: [], status: true });
@@ -15,10 +15,11 @@ const getUserOrders = async (req, res) => {
         let orders_with_driver_details = [];
 
         for (let i = 0; i < orders.length; i++) {
-            let driver = await Drivers.findOne({ _id: orders[i].driver_id }).select(['image', 'user_phone', 'name', 'email']).lean().exec();
+            let driver = await Drivers.findOne({ _id: orders[i].driver_id }).select(['image', 'user_phone', 'name', 'email', 'user_address', 'user_city', 'user_country', 'user_state']).lean().exec();
+            let driver_address = driver.user_address ? driver?.user_address : `${driver.user_city} ${driver.user_state} ${driver.user_country}`;
             let data = {
                 ...orders[i],
-                driver: driver
+                driver: { ...driver, driver_address: driver_address ? driver_address : "Driver address is missing" }
             }
             orders_with_driver_details.push(data);
         }

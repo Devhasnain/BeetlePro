@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const DriverSchema = new mongoose.Schema({
     vehicle_type: { type: String },
+    vehicle_color: { type: String },
     vehicle_reg_number: { type: String },
     driver_license: { type: String },
     driver_gray_front: { type: String },
@@ -23,7 +24,7 @@ const DriverSchema = new mongoose.Schema({
     role_type: { type: Number, required: true },
     user_id: { type: String },
     total_ratings: { type: Number },
-    member_since:{type:String},
+    member_since: { type: String },
     reviews: [
         {
             id: {
