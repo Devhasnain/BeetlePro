@@ -3,6 +3,7 @@ import Drivers from "../../../models/Driver.js";
 import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
 import generateId from '../../../utils/generateRandomId.js'
+import getDate from "../../../utils/getDate.js";
 
 let { order, order_status } = config;
 
@@ -17,13 +18,17 @@ const CreateOrder = async (req, res) => {
         }
         let order_id = generateId();
         let tracking_id = generateId();
+        let time = getDate().toString();
         let createOrder = await Orders.create({
             ...data,
             order_id,
             driver_id: driver._id,
             sender_id: user._id,
-            order_status: order_status.pending,
-            tracking_id
+            order_status: order_status.active,
+            status_analytics: [{ status: order_status.active, time }],
+            tracking_id,
+            flag: 0
+
         });
         await createOrder.save();
         return res.status(200).json({ msg: "Order Create Successfuly", status: true });

@@ -3,13 +3,13 @@ import handleError from "../../../utils/ReturnError.js";
 import config from '../../../../config.js';
 import _ from 'lodash';
 
-let { order } = config;
+let { order_status } = config;
 
 const getOrdersCompleted = async (req, res) => {
     try {
         let user = req.user;
         let orders = await Orders.find({ sender_id: user._id });
-      
+
         if (orders.length < 1) {
             return res.status(200).json({ orders: [], status: true })
         }
@@ -17,7 +17,7 @@ const getOrdersCompleted = async (req, res) => {
         let filter_orders = [];
 
         for (let i = 0; i < orders?.length; i++) {
-            if (orders[i].order_status === order.completed) {
+            if (orders[i].order_status === order_status.completed) {
                 let data = _.pick(orders[i], [
                     "tracking_id",
                     "order_id",

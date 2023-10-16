@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const DriverSchema = new mongoose.Schema({
     vehicle_type: { type: String },
+    model_number: { type: String },
     vehicle_color: { type: String },
     vehicle_reg_number: { type: String },
     driver_license: { type: String },

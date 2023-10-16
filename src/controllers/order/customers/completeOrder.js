@@ -2,6 +2,7 @@ import config from "../../../../config.js";
 import Drivers from "../../../models/Driver.js";
 import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
+import getDate from "../../../utils/getDate.js";
 
 let { order_status } = config;
 
@@ -26,7 +27,13 @@ const completeOrderById = async (req, res) => {
             return res.status(400).json({ msg: `Order hasn't been delivered yet by the rider!`, status: false });
         }
 
+        let time = getDate().toString();
+
+        let status_analytics = [...order.status_analytics, { status: order_status.completed, time }]
+
+
         order.order_status = order_status.completed;
+        order.status_analytics = status_analytics;
 
         await order.save();
 

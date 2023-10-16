@@ -1,10 +1,9 @@
 import config from "../../../../config.js";
 import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
+import getDate from "../../../utils/getDate.js";
 
-let { order, order_status } = config;
-
-const { delivered, picked_up } = order;
+let { order_status } = config;
 
 const completeOrderById = async (req, res) => {
     try {
@@ -27,7 +26,12 @@ const completeOrderById = async (req, res) => {
             return res.status(400).json({ msg: `Can't deliver an order before pickup!`, status: false });
         }
 
+        let time = getDate().toString();
+
+        let status_analytics = [...order.status_analytics, { status: order_status.delivered, time }]
+
         order.order_status = order_status.delivered;
+        order.status_analytics = status_analytics;
         await order.save();
 
         return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!`, status: true });

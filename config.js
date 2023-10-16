@@ -41,11 +41,10 @@ const config = {
         picked_up: "picked_up"
     },
     order_status: {
-        pending: "0",
-        active: "1",
-        picked_up: "2",
-        delivered: "3",
-        completed: "4"
+        active: "0",
+        picked_up: "1",
+        delivered: "2",
+        completed: "3"
     },
     driver_order_status: {
         active: 'active',

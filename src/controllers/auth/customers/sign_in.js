@@ -33,6 +33,8 @@ const SignIn = async (req, res) => {
         let response = handleError(error);
         return res.status(response.statusCode).json({ msg: response.body, status: false })
     }
+
+    return res.status(200).json({ msg: "true" })
 };
 
 export default SignIn;

@@ -14,10 +14,10 @@ const acceptOrderById = async (req, res) => {
         if (!order) {
             return res.status(400).json({ status: false, msg: `Order not found with this id:${order_id}, for driver:${user.user_id}` });
         };
-        if (order.order_status !== order_status.pending) {
+        if (order.order_status !== order_status.active) {
             return res.status(400).json({ status: false, msg: `Only order's can be accepted when your customer initially creates an order!` });
         }
-        order.order_status = order_status.active;
+        order.flag = 1;
         await order.save();
 
         return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!`, status: true });

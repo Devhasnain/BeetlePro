@@ -5,3 +5,10 @@ export const info = (...params) => {
 export const error = (...params) => {
     console.error(...params);
 };
+
+const logger = {
+    info,
+    error
+}
+
+export default logger;

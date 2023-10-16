@@ -21,7 +21,6 @@ import getDriverPendingOrders from "../controllers/order/driver/getPendingOrders
 import getCustomerPendingOrders from "../controllers/order/driver/getPendingOrders.js";
 import getOrderByTrackingId from "../controllers/order/customers/getOrderByTrackingId.js";
 import getDriverInfo from "../controllers/order/driver/getDriverInfo.js";
-import getOrderDataByTrackingId from "../controllers/order/customers/getOrderDataByTrackingId.js";
 
 const router = express.Router();
 
@@ -43,8 +42,7 @@ router.post('/driver-order-complete-api', driverApiGuard, completeOrderById); //
 router.post('/cancel-driver-order', driverApiGuard, driverCancelOrder); // cancel order > driver
 router.get('/get-driver-pending-orders', driverApiGuard, getDriverPendingOrders);
 router.get('/get-customer-pending-orders', customerapiGuard, getCustomerPendingOrders);
-router.get('/get-order-by-tracking-id/:tracking_id', customerapiGuard, getOrderByTrackingId); // done
-router.get('/get-order-data-by-tracking-id/:tracking_id', customerapiGuard, getOrderDataByTrackingId); // done
-router.get('/get-driver-info/:id', getDriverInfo);  //done
+router.get('/get-order-by-tracking-id/:tracking_id', customerapiGuard, getOrderByTrackingId);
+router.get('/get-driver-info/:id',getDriverInfo);  //done
 
 export default router;
