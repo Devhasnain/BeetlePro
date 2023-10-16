@@ -39,7 +39,7 @@ const OrdersSchema = new mongoose.Schema({
     flag: { type: Number },
     driver_quotation: { type: String },
     order_status: { type: String },
-    status_analytics: [{ status: { type: String, time: { type: String } } }],
+    status_analytics: [{ status: { type: String }, time: { type: String } }],
     order_id: { type: String },
     order_subtotal_price: { type: Number },
     order_shipping_assurance: { type: String },

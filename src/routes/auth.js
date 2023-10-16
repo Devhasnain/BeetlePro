@@ -19,6 +19,8 @@ import config from '../../config.js';
 import apiGuard from '../middlewares/customers/apiGuard.js';
 import getUserData from '../controllers/auth/getUserData.js';
 import updateUserProfile from '../controllers/auth/customers/updateProfile.js';
+import generateEmailOtp from '../controllers/auth/customers/generateEmailOtp.js';
+import verifyEmailOtp from '../controllers/auth/customers/verifyEmailOtp.js';
 
 let { usersCollection, driversCollection } = config;
 
@@ -45,5 +47,10 @@ router.post('/customer/login', VerifyCustomerToken, CustomerSignIn);
 router.post('/customer/update-profile', apiGuard, upload.single('image'), updateUserProfile);
 router.post('/customer/user-forget-password-reset', resetPassword(usersCollection));
 router.post('/customer/update-password', apiGuard, updateCurrentPassword(usersCollection));
+
+
+router.post('/customer/generate-email-otp', generateEmailOtp);
+router.post('/customer/verify-email-otp', verifyEmailOtp)
+
 
 export default router;

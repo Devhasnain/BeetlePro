@@ -19,8 +19,8 @@ const getOrderDataByTrackingId = async (req, res) => {
             return res.status(404).json({ msg: "Order not found!", status: false })
         }
 
-        if (order?.order_status === config.order.completed) {
-            return res.status(200).json({ msg: "The order has been completed!", status: true });
+        if (order?.order_status !== config.order_status.completed) {
+            return res.status(200).json({ msg: "The order hasn't been completed!", status: false });
         }
 
         return res.status(200).json({

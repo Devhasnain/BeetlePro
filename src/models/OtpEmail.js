@@ -1,21 +1,18 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
 const OtpEmailsSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: function () {
-            if (this.isDriver) {
-                return 'Driver';
-            } else {
-                return 'User';
-            }
-        },
+        ref: "User",
         required: true
     },
-    code: {
+    otp: {
         type: Number,
         required: true
-    }
+    },
+    expiry: {
+        type: Date,
+        required: true,
+    },
 },
     {
         timestamps: true
@@ -24,4 +21,5 @@ const OtpEmailsSchema = new mongoose.Schema({
 );
 
 const OTP_Email = mongoose.models.otp_email || mongoose.model("otp_email", OtpEmailsSchema);
-module.exports = OTP_Email;
+
+export default OTP_Email;

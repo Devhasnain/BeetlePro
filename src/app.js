@@ -15,6 +15,7 @@ import morgan from 'morgan';
 import * as middleware from './utils/loggerMiddleware.js';
 import ImageRoute from './routes/image.js';
 const app = express();
+import * as uuid from 'uuid';
 
 app.use(helmet());
 app.use(cors());

@@ -9,7 +9,8 @@ const getNewOrders = async (req, res) => {
         let user = req.user;
         let newOrders = await Orders.find({
             driver_id: user._id,
-            order_status: order_status.pending,
+            order_status: order_status.active,
+            flag: 0
         });
         return res.status(200).json({ orders: newOrders, status: true });
 
