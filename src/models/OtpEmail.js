@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-const ReviewsSchema = new mongoose.Schema({
-    userRef: {
+const OtpEmailsSchema = new mongoose.Schema({
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: function () {
             if (this.isDriver) {
@@ -9,15 +9,16 @@ const ReviewsSchema = new mongoose.Schema({
                 return 'User';
             }
         },
-    },
-    order_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order',
         required: true
     },
-    rating: { type: Number },
-    text: { type: String }
-
+    otp: {
+        type: Number,
+        required: true
+    },
+    expiry: {
+        type: Date,
+        required: true,
+    },
 },
     {
         timestamps: true
@@ -25,5 +26,6 @@ const ReviewsSchema = new mongoose.Schema({
 
 );
 
-const Reviews = mongoose.models.Review || mongoose.model("Review", ReviewsSchema);
-export default Reviews;
+const OTP_Email = mongoose.models.otp_email || mongoose.model("otp_email", OtpEmailsSchema);
+
+export default OTP_Email;

@@ -18,7 +18,18 @@ const UsersSchema = new mongoose.Schema({
     otp_id: { type: String },
     signup_type: { type: String },
     user_image: { type: String },
-    user_id: { type: String }
+    user_id: { type: String },
+    member_since: { type: String },
+    total_ratings: { type: Number },
+    reviews: [
+        {
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Review',
+            },
+            rating: { type: Number },
+            text: { type: String }
+        }],
 },
     {
         timestamps: true

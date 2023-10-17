@@ -1,34 +1,36 @@
-import Orders from "../../database/models/Order.js";
+import Orders from "../../models/Order.js";
 import handleError from "../../utils/ReturnError.js"
 import config from '../../../config.js';
 
-let { order, driversCollection, usersCollection } = config;
+let { order } = config;
 
-const getOrdersCanceled = (collection) => {
-    return async (req, res) => {
-        try {
+const getOrdersCanceled = async (req, res) => {
+    try {
+        let user = req.user;
 
-            let user = req.user;
+        let orders = await Orders.find({ sender_id: user._id });
 
-            if (collection === usersCollection) {
-
-                let orders = await Orders.find({ order_status: order.cancel, sender_id: user._id });
-                return res.status(200).json(orders);
+        let filter_orders = orders.map((item) => {
+            if (item.order_status !== order.cancel) {
+                let data = _.pick(item, [
+                    "tracking_id",
+                    "order_id",
+                    "itemtype",
+                    "deliverytype",
+                    "createdAt",
+                    "order_status"
+                ])
+                return {
+                    ...data
+                }
             }
+        });
 
-            if (collection === driversCollection) {
-
-                let orders = await Orders.find({ order_status: order.cancel, driver_id: user._id });
-                return res.status(200).json(orders);
-
-            }
-
-
-        } catch (error) {
-            let response = handleError(error);
-            return res.status(response.statusCode).json(response.body);
-        }
-    };
+        return res.status(200).json({ orders: filter_orders, status: true });
+    } catch (error) {
+        let response = handleError(error);
+        return res.status(response.statusCode).json({ msg: response.body, status: false });
+    }
 };
 
 export default getOrdersCanceled;

@@ -1,6 +1,6 @@
-import Drivers from "../../database/models/Driver.js";
+import Drivers from "../../models/Driver.js";
 import bcrypt from 'bcrypt';
-import Users from "../../database/models/User.js";
+import Users from "../../models/User.js";
 import config  from '../../../config.js';
 
 let { usersCollection, driversCollection, HttpStatusCodes  } = config;

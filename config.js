@@ -1,4 +1,4 @@
-const config ={
+const config = {
     httpMethods: [
         'GET',
         'POST',
@@ -32,10 +32,19 @@ const config ={
     SUPPORTEDMETHOD: 'POST',
     SUPPORTEDGETMETHOD: "GET",
     order: {
+        schedule: 'scheduled',
+        completed: "completed",
         cancel: "canceled",
         pending: 'pending',
         accept: 'active',
         delivered: 'delivered',
+        picked_up: "picked_up"
+    },
+    order_status: {
+        active: "0",
+        picked_up: "1",
+        delivered: "2",
+        completed: "3"
     },
     driver_order_status: {
         active: 'active',
@@ -45,7 +54,7 @@ const config ={
         active: 'active',
         canceled: 'canceled'
     },
-    imageURL: "http://localhost:3001/image",
+    imageURL: "https://phpstack-1080450-3915725.cloudwaysapps.com/image",
     port: 3000
 };
 

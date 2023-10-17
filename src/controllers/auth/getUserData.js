@@ -1,6 +1,6 @@
 import config from '../../../config.js'; 
-import Drivers from '../../database/models/Driver.js';
-import Users from '../../database/models/User.js';
+import Drivers from '../../models/Driver.js';
+import Users from '../../models/User.js';
 
 let { HttpStatusCodes, driversCollection, usersCollection } = config;
 

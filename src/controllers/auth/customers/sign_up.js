@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
 import _ from "lodash";
-import Users from '../../../database/models/User.js';
+import Users from '../../../models/User.js';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
+import handleError from '../../../utils/ReturnError.js';
 
 const extractField = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'user_image'];
 
@@ -14,7 +15,6 @@ const SignUp = async (req, res) => {
         if (!userData) {
             throw new Error('Unknow error occured while registration, please try again!')
         };
-
         let password = await bcrypt.hash(userData.password, 12);
 
         let user_id = uuidv4();
@@ -30,19 +30,15 @@ const SignUp = async (req, res) => {
 
         let savedUser = await registerUser.save();
 
-        if (!savedUser) {
-            return res.status(400).json({ msg: "Unknow error occured while registeration, please try again!" });
-        }
-
         let user = _.pick(savedUser, extractField);
 
-        let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        let token = jwt.sign({ _id: user._id, email: user.email }, process.env.JWT_SECRET);
 
-        return res.status(200).json({ user, token });
+        return res.status(200).json({ user, token, status: true });
 
     } catch (error) {
-        console.log(error)
-        return res.status(error?.statusCode ?? 500).json({ msg: error?.message ?? 'Internal Server Error' })
+        let response = handleError(error);
+        return res.status(response.statusCode).json({ msg: response.body, status: false })
     }
 };
 

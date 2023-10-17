@@ -1,9 +1,9 @@
 import config from "../../../../config.js";
-import Orders from "../../../database/models/Order.js";
+import Orders from "../../../models/Order.js";
+import handleError from "../../../utils/ReturnError.js";
+import getDate from "../../../utils/getDate.js";
 
-let { HttpStatusCodes, order } = config;
-
-const { accept, delivered, cancel } = order;
+let { order_status } = config;
 
 const completeOrderById = async (req, res) => {
     try {
@@ -13,33 +13,32 @@ const completeOrderById = async (req, res) => {
         let { order_id } = req.body;
 
         if (!order_id) {
-            return res.status(400).json({ msg: "Bad request! Specify order id to update order status." });
+            return res.status(400).json({ msg: "Bad request! Specify order id to update order status.", status: false });
         }
-
-        let order = await Orders.findOne({ order_id: order_id, driver_id: user._id });
-
+        let order = await Orders.findOne({ order_id, driver_id: user._id });
         if (!order) {
-            return res.status(404).json({ msg: `Order not found with this id:${order_id}, for driver:${user.user_id}` });
+            return res.status(404).json({ msg: `Order not found with this id:${order_id}, for driver:${user.user_id}`, status: false });
         };
-
-        if (order.order_status === cancel) {
-            return res.status(400).json({ msg: `Order ${order.order_id} has been canceled` });
+        if (order.order_status === order_status.delivered) {
+            return res.status(400).json({ msg: `Order has already been delivered!`, status: false });
+        }
+        if (order.order_status !== order_status.picked_up) {
+            return res.status(400).json({ msg: `Can't deliver an order before pickup!`, status: false });
         }
 
-        if (order.order_status !== accept) {
-            return res.status(400).json({ msg: `Order ${order.order_id} is not yet accepted!` });
-        }
+        let time = getDate().toString();
 
-        if (order.order_status === delivered) {
-            return res.status(400).json({ msg: `Order ${order.order_id} has already been delivered!` });
-        }
+        let status_analytics = [...order.status_analytics, { status: order_status.delivered, time }]
 
-        await Orders.findOneAndUpdate({ _id: order._id }, { $set: { driver_order_status: delivered } }, { new: true });
+        order.order_status = order_status.delivered;
+        order.status_analytics = status_analytics;
+        await order.save();
 
-        return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!` });
+        return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!`, status: true });
 
     } catch (error) {
-        return res.status(error?.statusCode ?? HttpStatusCodes.internalServerError).json({ msg: error?.message ?? "Internal Server Error" })
+        let response = handleError(error);
+        return res.status(response.statusCode).json({ msg: response.body, status: false })
     }
 };
 

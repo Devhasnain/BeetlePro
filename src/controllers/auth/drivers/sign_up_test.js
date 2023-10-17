@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
 import config from '../../../../config.js';
-import Drivers from '../../../database/models/Driver.js';
-import Files from '../../../database/models/File.js';
+import Drivers from '../../../models/Driver.js';
+import Files from '../../../models/File.js';
 
 let { imageURL } = config;
 

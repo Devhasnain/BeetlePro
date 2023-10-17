@@ -1,55 +1,78 @@
-import Orders from "../../../database/models/Order.js";
+import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
 import config from '../../../../config.js';
-import Reviews from "../../../database/models/Review.js";
-
-let { order } = config;
-
-let { delivered } = order;
+import Reviews from "../../../models/Review.js";
+import Drivers from "../../../models/Driver.js";
+import calculateTotalRating from "../../../utils/getTotalRating.js";
 
 const createReview = async (req, res) => {
 
     try {
-
         let user = req.user;
 
-        const { order_id, rating, text } = req.body;
+        let { order_id, text, rating } = req.body;
 
-        let order = await Orders.findOne({ order_id, sender_id: user._id });
+        let order = await Orders.findOne({ order_id });
 
         if (!order) {
-            return res.status(404).json({ msg: `Order:${order_id} not found!` });
+            return res.status(404).json({ msg: "Order not found!" });
+        };
+
+        if (order.order_status !== config.order_status.completed) {
+            return res.status(400).json({ msg: "Order hasn't yet been completed", status: false })
         }
 
-        if (order.order_status !== delivered) {
-            return res.status(400).json({ msg: `You can't write a review for this order ${order_id}, Or hasn't been delivered!` });
+        if (order?.reviewed && order?.review_id) {
+            return res.status(400).json({ msg: "Order has already been reviewd", status: false })
         }
 
-        if (order?.sender_order_review_id) {
-            return res.status(404).json({ msg: `You already have added you'r review to this order! ${order_id}` });
-        }
+        let driver = await Drivers.findOne({ _id: order.driver_id });
 
-        let createReview = await Reviews.create({
-            isDriver: false,
-            userRef: user._id,
-            order_id: order._id,
+        let review = await Reviews.create(
+            {
+                userRef: {
+                    id: user._id,
+                    name: user?.name,
+                    email: user?.email,
+                    image: user?.image,
+                    user_phone: user?.user_phone
+                },
+                orderRef: order._id,
+                driverRef: {
+                    id: driver._id,
+                    name: driver?.name,
+                    email: driver?.email,
+                    image: driver?.image,
+                    user_phone: driver?.user_phone
+                },
+                text,
+                rating
+            });
+
+        await review.save();
+
+        order.reviewed = true;
+        order.review_id = review._id;
+        await order.save();
+
+        let reviewData = {
+            id: review._id,
             rating,
             text
-        });
-
-        let saveReview = await createReview.save();
-
-        if (!saveReview) {
-            return res.status(400).json({ msg: `Some error occured on the server, Unable to write a review for order:${order_id}` });
         }
 
-        let updatedOrder = await Orders.findOneAndUpdate({ order_id }, { $set: { sender_order_review_id: saveReview._id } });
+        driver.reviews = [...driver.reviews, reviewData];
+        let total_ratings = calculateTotalRating(driver.reviews);
 
-        return res.status(200).json({ updatedOrder })
+        driver.total_ratings = total_ratings;
+
+        await driver.save();
+
+        return res.status(200).json({ msg: "Review added successfuly", status: true })
 
     } catch (error) {
         const response = handleError(error);
-        return res.status(response.statusCode).json(response.body);
+        return res.status(response.statusCode).json({ msg: response.body, status: false });
     }
 };
 

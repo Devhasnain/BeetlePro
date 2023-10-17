@@ -1,4 +1,4 @@
-import "./logger.js";
+import logger from "./logger.js";
 
 export const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: `uknonwn endpoint` });
