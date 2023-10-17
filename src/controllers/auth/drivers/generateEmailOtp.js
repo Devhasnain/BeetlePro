@@ -1,13 +1,13 @@
 import OTP_Email from "../../../models/OtpEmail.js";
 import transporter from "../../../utils/EmailSender.js";
 import handleError from "../../../utils/ReturnError.js";
-import Users from '../../../models/User.js';
+import Drivers from '../../../models/Driver.js';
 
 const generateEmailOtp = async (req, res) => {
     try {
         let { email } = req.body
 
-        let user = await Users.findOne({ email });
+        let user = await Drivers.findOne({ email });
 
         if (!user) {
             return res.status(404).json({ msg: "User not found with this email!", status: false });

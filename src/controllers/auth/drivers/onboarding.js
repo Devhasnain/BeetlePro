@@ -8,7 +8,6 @@ import config from '../../../../config.js';
 const OnboardingV1 = async (req, res) => {
     try {
         let user = req.user;
-        console.log(user)
         let id = user._id;
         const files = req.files;
         if (!files.length) {

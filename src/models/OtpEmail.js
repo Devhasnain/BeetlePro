@@ -2,7 +2,13 @@ import mongoose from "mongoose";
 const OtpEmailsSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: function () {
+            if (this.isDriver) {
+                return 'Driver';
+            } else {
+                return 'User';
+            }
+        },
         required: true
     },
     otp: {

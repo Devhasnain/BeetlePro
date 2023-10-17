@@ -10,8 +10,10 @@ import getUserOrders from "../controllers/order/getUserOrders.js";
 import acceptOrderById from "../controllers/order/driver/acceptOrderById.js";
 import completeOrderById from "../controllers/order/driver/completeOrderById.js";
 import getOrdersInProgress from "../controllers/order/customers/getOrdersInProgress.js";
+import getDriverInProgressOrders from "../controllers/order/driver/getInProgressOrders.js";
 import getOrdersCanceled from "../controllers/order/getOrdersCanceled.js";
 import getOrdersCompleted from "../controllers/order/customers/getOrdersCompleteted.js";
+import getDriverCompletedOrders from "../controllers/order/driver/getCompletedOrders.js";
 import getNewOrders from "../controllers/order/driver/getNewOrders.js";
 import pickedUpOrder from "../controllers/order/driver/pickedUpOrder.js";
 import getOrderStatus from "../controllers/order/customers/getOrderStatus.js";
@@ -46,5 +48,9 @@ router.get('/get-customer-pending-orders', customerapiGuard, getCustomerPendingO
 router.get('/get-order-by-tracking-id/:tracking_id', customerapiGuard, getOrderByTrackingId); // done
 router.get('/get-order-data-by-tracking-id/:tracking_id', customerapiGuard, getOrderDataByTrackingId); // done
 router.get('/get-driver-info/:id', getDriverInfo);  //done
+router.get('/get-customer-info/:id', getDriverInfo);  //done
+router.get('/get-driver-completed-orders', driverApiGuard, getDriverCompletedOrders);
+router.get('/get-driver-completed-orders', driverApiGuard, getDriverInProgressOrders);
+
 
 export default router;

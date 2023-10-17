@@ -3,7 +3,7 @@ import handleError from "../../../utils/ReturnError.js"
 import config from "../../../../config.js";
 import getDate from "../../../utils/getDate.js";
 
-const { order, order_status } = config;
+const { order_status } = config;
 
 const pickedUpOrder = async (req, res) => {
     try {

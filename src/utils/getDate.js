@@ -6,9 +6,8 @@ const getDate = () => {
     let hours = date.getHours();
     let minutes = date.getMinutes();
     let seconds = date.getSeconds();
-    let hour = (hours === 0) ? 12 : hours;
 
-    return `${month}-${day}-${year}T${(hours === 0 ? 12 : hours)}:${minutes}:${seconds} ${(hour >= 12) ? "AM" : "PM"}`
+    return `${month}-${day}-${year}T${(hours === 0 ? 12 : hours)}:${minutes}:${seconds}`
 };
 
 export default getDate;

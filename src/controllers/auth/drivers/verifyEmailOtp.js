@@ -1,4 +1,4 @@
-import Users from "../../../models/User.js";
+import Drivers from "../../../models/Driver.js";
 import OTP_Email from "../../../models/OtpEmail.js";
 import handleError from "../../../utils/ReturnError.js"
 
@@ -6,7 +6,7 @@ const verifyEmailOtp = async (req, res) => {
     try {
         let { email, otp } = req.body;
 
-        let user = await Users.findOne({ email })
+        let user = await Drivers.findOne({ email })
 
         if (!user) {
             return res.status(404).json({ msg: "User not found with the provided email", status: false });

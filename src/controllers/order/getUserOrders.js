@@ -19,6 +19,7 @@ let order_fields = [
     'tracking_id',
     'order_dropoff_location',
     'order_pickup_day',
+    'status_analytics',
     '_id',
 ]
 

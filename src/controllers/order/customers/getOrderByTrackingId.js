@@ -33,7 +33,8 @@ const getOrderByTrackingId = async (req, res) => {
                 order_id: order?.order_id,
                 deliverytype: order?.deliverytype,
                 tracking_id: order?.tracking_id,
-                order_status: order?.order_status
+                order_status: order?.order_status,
+                status_analytics:order?.status_analytics
             }, driver: {
                 image: driver?.image ?? "",
                 email: driver?.email,
