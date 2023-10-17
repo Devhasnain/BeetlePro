@@ -13,7 +13,6 @@ import DriverSignUpOnboard from '../controllers/auth/drivers/sign_up_test.js';
 
 import { OnboardingV1, OnboardingV2, OnboardingV3 } from '../controllers/auth/drivers/onboarding.js';
 import dynamicFieldName from '../middlewares/setFileName.js';
-// import updateCurrentPassword from '../controllers/auth/updateCurrentPassword.js';
 import config from '../../config.js';
 import apiGuard from '../middlewares/customers/apiGuard.js';
 import getUserData from '../controllers/auth/getUserData.js';
@@ -21,6 +20,9 @@ import updateUserProfile from '../controllers/auth/customers/updateProfile.js';
 import generateEmailOtp from '../controllers/auth/customers/generateEmailOtp.js';
 import verifyEmailOtp from '../controllers/auth/customers/verifyEmailOtp.js';
 import resetPassword from '../controllers/auth/customers/resetPassword.js';
+import generateEmailOtpDrivers from '../controllers/auth/drivers/generateEmailOtp.js';
+import verifyEmailOtpDrivers from '../controllers/auth/drivers/verifyEmailOtp.js';
+import resetPasswordDrivers from '../controllers/auth/drivers/resetPassword.js';
 
 let { usersCollection, driversCollection } = config;
 
@@ -32,9 +34,9 @@ router.get('/driver/:user_id', getUserData(driversCollection));
 router.post('/driver/sign_up', uploadMultipleFiles, useCheckDriverEmail, DriverSignUpOnboard);
 router.post('/driver/register', uploadMultipleFiles, useCheckDriverEmail, DriverSignUp);
 router.post('/driver/login', VerifyDriverToken, DriverSignIn);
-router.post('/driver/generate-email-otp', generateEmailOtp);
-router.post('/driver/verify-email-otp', verifyEmailOtp);
-router.post('/driver/reset-password', resetPassword);
+router.post('/driver/generate-email-otp', generateEmailOtpDrivers);
+router.post('/driver/verify-email-otp', verifyEmailOtpDrivers);
+router.post('/driver/reset-password', resetPasswordDrivers);
 
 // driver file uploads 
 router.post('/driver/onboarding/v1', apiGuardDrivers, uploadMultipleFiles, OnboardingV1);
