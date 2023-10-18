@@ -13,9 +13,10 @@ const SignUp = async (req, res) => {
     try {
         let files = req?.files;
         let userData = req.user;
-        let password = await bcrypt.hash(userData.password, 12);
+        let password = await bcrypt.hash(userData.password.trim(), 12);
         let user_id = uuidv4();
         let newUser = {
+            email: userData.email.trim(),
             ...userData,
             password,
             user_id,

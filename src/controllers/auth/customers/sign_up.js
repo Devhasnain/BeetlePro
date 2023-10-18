@@ -15,6 +15,7 @@ const SignUp = async (req, res) => {
         if (!userData) {
             throw new Error('Unknow error occured while registration, please try again!')
         };
+
         let password = await bcrypt.hash(userData.password, 12);
 
         let user_id = uuidv4();

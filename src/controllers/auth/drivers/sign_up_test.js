@@ -17,9 +17,10 @@ const SignUpTest = async (req, res) => {
             throw new Error('Unknow error occured while registration, please try again!')
         };
 
-        let password = await bcrypt.hash(userData.password, 12);
+        let password = await bcrypt.hash(userData.password.trim(), 12);
 
         let newUser = {
+            email: userData.email.trim(),
             ...userData,
             password
         }
@@ -55,7 +56,7 @@ const SignUpTest = async (req, res) => {
                 await Drivers.findByIdAndUpdate({ _id: id }, { $set: { [fieldname]: imageUrl } }, { new: true });
             });
 
-            return res.status(200).json({user,status:true});
+            return res.status(200).json({ user, status: true });
 
         }
 

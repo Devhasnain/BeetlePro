@@ -8,7 +8,7 @@ const useCheckExistingEmail = async (req, res, next) => {
     try {
 
         const { email, role_type } = req.body;
-
+        email.trim();
         let checkIfEmailinDrivers = await Drivers.findOne({ email });
         let checkIfEmailinCutomers = await Users.findOne({ email });
 
