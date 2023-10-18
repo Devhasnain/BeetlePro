@@ -17,6 +17,9 @@ const acceptOrderById = async (req, res) => {
         if (order.order_status !== order_status.active) {
             return res.status(400).json({ status: false, msg: `Only order's can be accepted when your customer initially creates an order!` });
         }
+        if (order.flag && order.order_accepted_at) {
+            return res.status(400).json({ status: false, msg: `Order has already been accepted` });
+        }
         order.flag = 1;
         await order.save();
 

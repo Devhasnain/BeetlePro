@@ -2,13 +2,13 @@ import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js";
 import config from '../../../../config.js';
 import Reviews from "../../../models/Review.js";
-import Drivers from "../../../models/Driver.js";
+import Users from "../../../models/User.js";
 import calculateTotalRating from "../../../utils/getTotalRating.js";
 
 const createReview = async (req, res) => {
 
     try {
-        let user = req.user;
+        let driver = req.user;
 
         let { order_id, text, rating } = req.body;
 
@@ -22,11 +22,11 @@ const createReview = async (req, res) => {
             return res.status(400).json({ msg: "Order hasn't yet been completed", status: false })
         }
 
-        if (order?.reviewed_by_customer && order?.review_id?.customer) {
+        if (order?.reviewed_by_driver && order?.review_id?.driver) {
             return res.status(400).json({ msg: "Order has already been reviewd", status: false })
         }
 
-        let driver = await Drivers.findOne({ _id: order.driver_id });
+        let user = await Users.findOne({ _id: order.sender_id });
 
         let review = await Reviews.create(
             {
@@ -51,8 +51,8 @@ const createReview = async (req, res) => {
 
         await review.save();
 
-        order.reviewed_by_customer = true;
-        order.review_id.customer = review._id;
+        order.reviewed_by_driver = true;
+        order.review_id.driver = review._id;
         await order.save();
 
         let reviewData = {
@@ -61,12 +61,12 @@ const createReview = async (req, res) => {
             text
         }
 
-        driver.reviews = [...driver.reviews, reviewData];
-        let total_ratings = calculateTotalRating(driver.reviews);
+        user.reviews = [...user.reviews, reviewData];
+        let total_ratings = calculateTotalRating(user.reviews);
 
-        driver.total_ratings = total_ratings;
+        user.total_ratings = total_ratings;
 
-        await driver.save();
+        await user.save();
 
         return res.status(200).json({ msg: "Review added successfuly", status: true })
 

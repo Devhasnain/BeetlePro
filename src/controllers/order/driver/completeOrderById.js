@@ -26,17 +26,16 @@ const completeOrderById = async (req, res) => {
             return res.status(400).json({ msg: `Can't deliver an order before pickup!`, status: false });
         }
 
-        let time = getDate().toString();
-
-        let status_analytics = [...order.status_analytics, { status: order_status.delivered, time }]
+        let status_analytics = [...order.status_analytics, { status: order_status.delivered }]
 
         order.order_status = order_status.delivered;
         order.status_analytics = status_analytics;
         await order.save();
 
-        return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly accepted the order!`, status: true });
+        return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly delivered the order!`, status: true });
 
     } catch (error) {
+        console.log(error)
         let response = handleError(error);
         return res.status(response.statusCode).json({ msg: response.body, status: false })
     }

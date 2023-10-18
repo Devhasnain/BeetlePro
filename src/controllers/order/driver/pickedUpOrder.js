@@ -1,7 +1,6 @@
 import Orders from "../../../models/Order.js";
 import handleError from "../../../utils/ReturnError.js"
 import config from "../../../../config.js";
-import getDate from "../../../utils/getDate.js";
 
 const { order_status } = config;
 
@@ -19,12 +18,17 @@ const pickedUpOrder = async (req, res) => {
         };
 
         if (getorder.order_status !== order_status.active) {
-            return res.status(400).json({ msg: "Bad request", status: false });
+            if (getorder.order_status === order_status.picked_up) {
+                return res.status(400).json({ msg: "Order has already been picked up!", status: false });
+            } else if (getorder.order_status === order_status.delivered) {
+                return res.status(400).json({ msg: "Order has been already delivered", status: false });
+            } else if (getorder.order_status === order_status.completed) {
+                return res.status(400).json({ msg: "Order has been completed", status: false });
+            } else {
+                return res.status(400).json({ msg: "Bad request", status: false });
+            }
         }
-        let time = getDate().toString();
-
-        let status_analytics = [...getorder.status_analytics, { status: order_status.picked_up, time }]
-
+        let status_analytics = [...getorder.status_analytics, { status: order_status.picked_up }]
         getorder.order_status = order_status.picked_up;
         getorder.status_analytics = status_analytics;
         await getorder.save();

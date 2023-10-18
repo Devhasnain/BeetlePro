@@ -37,15 +37,20 @@ const OrdersSchema = new mongoose.Schema({
         ref: 'Driver',
     },
     flag: { type: Number },
+    order_accepted_at: { type: Date, default: Date.now },
     driver_quotation: { type: String },
     order_status: { type: String },
-    status_analytics: [{ status: { type: String }, time: { type: String } }],
+    status_analytics: [{ status: { type: String }, time: { type: Date, default: Date.now } }],
     order_id: { type: String },
     order_subtotal_price: { type: Number },
     order_shipping_assurance: { type: String },
     scheduled_time: { type: Number },
-    reviewed: { type: Boolean },
-    review_id: { type: mongoose.Types.ObjectId, ref: "Review" }
+    reviewed_by_customer: { type: Boolean },
+    reviewed_by_driver: { type: Boolean },
+    review_id: {
+        customer: { type: mongoose.Types.ObjectId, ref: "Review" },
+        driver: { type: mongoose.Types.ObjectId, ref: "Review" }
+    }
 },
     {
         timestamps: true

@@ -27,10 +27,7 @@ const completeOrderById = async (req, res) => {
             return res.status(400).json({ msg: `Order hasn't been delivered yet by the rider!`, status: false });
         }
 
-        let time = getDate().toString();
-
-        let status_analytics = [...order.status_analytics, { status: order_status.completed, time }]
-
+        let status_analytics = [...order.status_analytics, { status: order_status.completed}]
 
         order.order_status = order_status.completed;
         order.status_analytics = status_analytics;
