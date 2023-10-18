@@ -24,17 +24,18 @@ import getCustomerPendingOrders from "../controllers/order/driver/getPendingOrde
 import getOrderByTrackingId from "../controllers/order/customers/getOrderByTrackingId.js";
 import getDriverInfo from "../controllers/order/driver/getDriverInfo.js";
 import getOrderDataByTrackingId from "../controllers/order/customers/getOrderDataByTrackingId.js";
+import getCustomerInfo from "../controllers/order/customers/getCustomerInfo.js";
 
 const router = express.Router();
 
 router.get('/get-all-drivers', getAllDrivers); // get drivers list  done
 router.get('/get-all-orders', customerapiGuard, getUserOrders);   // get user orders  done
 router.get('/get/:id', customerapiGuard, getOrderById); //get order by id  done
-router.get('/get-canceled-customer-orders', customerapiGuard, getOrdersCanceled);  // get customer canceled orders
+// router.get('/get-canceled-customer-orders', customerapiGuard, getOrdersCanceled);  // get customer canceled orders
 router.get('/get-completed-customer-orders', customerapiGuard, getOrdersCompleted); // get customer completed orders
 router.post('/create', customerapiGuard, CreateOrder);  // create order  done
 router.post('/schedule-order', customerapiGuard, scheduleOrder);
-router.post('/cancel-user-order', customerapiGuard, customerCancelOrder);  // cancel order
+// router.post('/cancel-user-order', customerapiGuard, customerCancelOrder);  // cancel order
 router.get('/get-order-status/:order_id', customerapiGuard, getOrderStatus);   // get order status  done
 router.post('/complete-order-by-user', customerapiGuard, completeUserOrderById);  // complete order by user  done
 router.get('/get-inprogress-customer-orders', customerapiGuard, getOrdersInProgress); // customer inprogress orders
@@ -43,14 +44,14 @@ router.post('/accept-order-by-rider', driverApiGuard, acceptOrderById); // accep
 router.post('/picked-up-order-by-rider', driverApiGuard, pickedUpOrder); // pick up > driver  done
 router.post('/driver-order-complete-api', driverApiGuard, completeOrderById); // deliver order > driver  done
 router.post('/cancel-driver-order', driverApiGuard, driverCancelOrder); // cancel order > driver
-router.get('/get-driver-pending-orders', driverApiGuard, getDriverPendingOrders);
-router.get('/get-customer-pending-orders', customerapiGuard, getCustomerPendingOrders);
+// router.get('/get-driver-pending-orders', driverApiGuard, getDriverPendingOrders);
+// router.get('/get-customer-pending-orders', customerapiGuard, getCustomerPendingOrders);
 router.get('/get-order-by-tracking-id/:tracking_id', customerapiGuard, getOrderByTrackingId); // done
 router.get('/get-order-data-by-tracking-id/:tracking_id', customerapiGuard, getOrderDataByTrackingId); // done
 router.get('/get-driver-info/:id', getDriverInfo);  //done
-router.get('/get-customer-info/:id', getDriverInfo);  //done
+router.get('/get-customer-info/:id', getCustomerInfo);  //done
 router.get('/get-driver-completed-orders', driverApiGuard, getDriverCompletedOrders);
-router.get('/get-driver-completed-orders', driverApiGuard, getDriverInProgressOrders);
+router.get('/get-driver-inprogress-orders', driverApiGuard, getDriverInProgressOrders);
 
 
 export default router;

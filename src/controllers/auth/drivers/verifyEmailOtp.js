@@ -28,10 +28,9 @@ const verifyEmailOtp = async (req, res) => {
 
         await OTP_Email.findOneAndDelete({ _id: otpRecord._id });
 
-        return res.status(200).json({ msg: "Password reset sussessfuly", status: true })
+        return res.status(200).json({ msg: "Otp verified successfuly", status: true })
 
     } catch (error) {
-        console.log(error)
         let response = handleError(error);
         return res.status(response.statusCode).json({ msg: response.body, status: false });
     }
