@@ -10,16 +10,17 @@ import AuthRoute from './routes/auth.js';
 import OrderRoute from './routes/order.js';
 import ReviewRoute from './routes/review.js';
 import FaqsRoute from './routes/faq.js';
-import TestRoute from './routes/test.js';
 import morgan from 'morgan';
-import * as middleware from './utils/loggerMiddleware.js';
-import ImageRoute from './routes/image.js';
 const app = express();
 
 app.use(helmet());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+    verify: function (req, res, buf) {
+        req.rawBody = buf;
+    }
+}));
 function shouldCompress(req, res) {
     if (req.headers['x-no-compression']) {
         return false
@@ -35,11 +36,6 @@ DBconnection();
 app.use('/auth', AuthRoute);
 app.use('/order', OrderRoute);
 app.use('/review', ReviewRoute);
-app.use('/image', ImageRoute);
 app.use('/faqs', FaqsRoute);
-app.use('/test', TestRoute);
-
-app.use(middleware.unknownEndpoint);
-app.use(middleware.errorHandler);
 
 export default app;

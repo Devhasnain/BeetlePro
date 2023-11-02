@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 const config = {
     httpMethods: [
         'GET',
@@ -55,7 +57,12 @@ const config = {
         canceled: 'canceled'
     },
     imageURL: "https://phpstack-1080450-3915725.cloudwaysapps.com/image",
-    port: 3000
+    port: 3000,
+    MONGODB_URI: process.env.MONGODB_URI,
+    JWT_SECRET: process.env.JWT_SECRET,
+    STRIPE_SECRET_KEY:process.env.STRIPE_SECRET_KEY,
+    STRIPE_PUBLIC_KEY:process.env.STRIPE_PUBLIC_KEY,
+    domain: "http://localhost:3000"
 };
 
 export default config

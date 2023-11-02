@@ -17,8 +17,8 @@ function handleError(error) {
             statusCode = 500;
         }
     } else {
-        errorMessage = "An unknown error occurred.";
-        statusCode = 500;
+        errorMessage = error.message;
+        statusCode = error.statusCode;
     }
 
     return {

@@ -6,8 +6,12 @@ const FilesSchema = new mongoose.Schema({
         ref: function () {
             if (this.isDriver) {
                 return 'Driver';
-            } else {
+            } else if (this.isUser) {
                 return 'User';
+            } else if (this.isAdmin) {
+                return 'Admin'
+            }else{
+                ""
             }
         },
     },

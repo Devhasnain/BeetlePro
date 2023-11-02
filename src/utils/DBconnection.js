@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import config from "../../config.js";
 
 const DBconnection = async () => {
     try {
         if (mongoose.connection.readyState !== 1) {
-            const dbURI = process.env.MONGODB_URI;
+            const dbURI = config.MONGODB_URI;
             const options = {
                 family: 4,
                 useNewUrlParser: true,

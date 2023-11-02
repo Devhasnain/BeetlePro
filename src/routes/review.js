@@ -1,13 +1,13 @@
 import express from 'express';
-import apiGuardCustomers from '../middlewares/customers/apiGuard.js';
-import apiGuardDrivers from '../middlewares/drivers/apiGuard.js';
-import createReviewCustomer from '../controllers/review/customer/createReview.js';
-import createReviewDriver from '../controllers/review/driver/createReview.js';
+import {CustomerCreateReview} from '../controllers/review/customer.js'
+import {DriverCreateReview} from '../controllers/review/driver.js'
+import { customersApiGuard } from '../middlewares/customer.js';
+import { drivresApiGuard } from '../middlewares/driver.js';
 
 const router = express.Router();
 
-router.post('/customer-write-review', apiGuardCustomers, createReviewCustomer);
-router.post('/driver-write-review', apiGuardDrivers, createReviewDriver);
+router.post('/customer-write-review', customersApiGuard, CustomerCreateReview);
+router.post('/driver-write-review', drivresApiGuard, DriverCreateReview);
 
 
 export default router;
