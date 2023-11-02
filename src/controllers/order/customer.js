@@ -33,7 +33,7 @@ export const CreateOrder = async (req, res) => {
         await driver.save();
         await Users.findOneAndUpdate({ _id: user._id }, { $set: { number_of_orders: userOrders } });
 
-        res.status(200).json({ msg: "Order Create Successfuly", status: true });
+        return res.status(200).json({ msg: "Order Create Successfuly", status: true });
 
     } catch (error) {
         console.log(error)

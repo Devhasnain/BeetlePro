@@ -8,6 +8,7 @@ import config from '../../../config.js';
 import handleError from '../../utils/ReturnError.js';
 import OTP_Email from '../../models/OtpEmail.js';
 import transporter from '../../utils/emails/EmailSender.js';
+import Orders from '../../models/Order.js';
 
 const extractField = ['name', 'email', 'user_phone', 'role_type', '_id', 'createdAt', 'updatedAt', 'user_id', 'image'];
 export const SignUpDriver = async (req, res) => {

@@ -17,7 +17,7 @@ import {
     UploadDriverDocs,
     UpdateDriverCurrentPassword
 } from '../controllers/auth/drivers.js';
-import { IsMailOtpSentToDriver, VerifyTokenDrivers, checkEmailDrivers } from '../middlewares/driver.js';
+import { IsMailOtpSentToDriver, VerifyTokenDrivers, checkEmailDrivers, drivresApiGuard } from '../middlewares/driver.js';
 import {
     IsMailOtpSentToCustomer,
     VerifyTokenCustomers,
@@ -40,6 +40,7 @@ router.put('/driver/update-password', VerifyTokenDrivers, UpdateDriverCurrentPas
 router.get('/driver/image/:id', serveImage);
 // driver file uploads 
 router.post('/driver/onboarding/v1', VerifyTokenDrivers, uploadMultipleFiles, UploadDriverDocs);
+
 
 // customer auth
 router.post('/customer/register', checkEmailCustomers, CustomerSignUp);

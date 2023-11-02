@@ -92,7 +92,7 @@ export const DriverDeliverOrderById = async (req, res) => {
         order.status_analytics = status_analytics;
         await order.save();
 
-       return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly delivered the order!`, status: true });
+        return res.status(200).json({ msg: `Congrates ${user.name} you have successfuly delivered the order!`, status: true });
 
 
     } catch (error) {
@@ -152,6 +152,11 @@ let order_fields = [
     'order_subtotal_price',
     'recievercompleteaddress',
     'sender_address',
+    'weight',
+    'itemtype',
+    'pickup_location',
+    'dropofflocation',
+    'tracking_id',
     'order_id',
     'sender_id',
     'driver_id',
@@ -225,3 +230,31 @@ export const GetDriverInProgressOrders = async (req, res) => {
         return res.status(response.statusCode).json({ msg: response.body, status: false });
     }
 };
+
+
+let driver_profile_fields = [
+    'order_id',
+    'tracking_id',
+    'createdAt',
+    'itemtype',
+    'order_subtotal_price',
+    'order_status',
+]
+export const GetDriverProfile = async (req, res) => {
+    try {
+        let user = req.user;
+
+        let orders = await Orders.find({ driver_id: user._id, order_status: config.order_status.completed }).select(driver_profile_fields);
+
+        let balance = 0;
+        for (let i = 0; i < orders?.length; i++) {
+            balance += orders[i].order_subtotal_price
+        }
+
+        return res.status(200).json({ orders, user: { name: user.name, balance, email: user.email }, status: true })
+
+    } catch (error) {
+        let response = handleError(error);
+        return res.status(response.statusCode).json({ msg: response.body, status: false });
+    }
+}

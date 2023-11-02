@@ -7,8 +7,8 @@ import config from "../config.js";
 
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || config.port;
-app.set("port", PORT);
+const port = process.env.PORT || config.port;
+app.set("port", port);
 
 if (process.env.NODE_ENV !== "production") {
     dotenv.config();
@@ -56,6 +56,6 @@ function onListening() {
     console.log(`server is live on ${bind}`)
 }
 
-server.listen(PORT);
+server.listen(port);
 server.on("listening", onListening);
 server.on("error", onError);
