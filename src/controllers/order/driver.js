@@ -128,17 +128,7 @@ export const GetDriverInfoById = async (req, res) => {
             return res.status(404).json({ msg: "Driver not found", status: false });
         }
 
-        let member_since;
-
-        if (!driver.member_since) {
-            let date = new Date(driver.createdAt);
-            let year = date.getFullYear();
-            let month = date.getMonth() + 1;
-            let getdate = date.getDate();
-            member_since = `${getdate}/${month}/${year}`;
-        }
-
-        return res.status(200).json({ driver: { ...driver, member_since: driver.member_since ? driver.member_since : member_since }, status: true });
+        return res.status(200).json({ driver: { ...driver }, status: true });
 
     } catch (error) {
         let response = handleError(error);

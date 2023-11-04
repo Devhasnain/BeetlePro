@@ -52,6 +52,6 @@ router.get('/get-all-drivers', getAllDrivers); //done drivers list
 router.get('/get-all-orders', customersApiGuard, getAllUserOrders);   // get user orders  done
 
 
-router.get('/driver-profile', drivresApiGuard, GetDriverProfile);
+router.get('/e-wallet', drivresApiGuard, GetDriverProfile);
 
 export default router;
